@@ -4,7 +4,7 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 
-open class Read_file {
+open class Read_file: Create_choose_command {
 
     var path: String = ""
 
@@ -34,8 +34,14 @@ open class Read_file {
                     break
                 }
             }
+            create_choose_command(collection, count_key)
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    override fun create_choose_command(collection: Collection, count_key: Int) {
+        val chooseCommand= Choose_command()
+        chooseCommand.choose_coomand(collection, count_key)
     }
 }
