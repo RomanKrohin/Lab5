@@ -4,7 +4,7 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 
-open class Read_file: Create_choose_command {
+open class Read_file: Create_choose_command, Create_check_module {
 
     var path: String = ""
 
@@ -19,19 +19,18 @@ open class Read_file: Create_choose_command {
             var count_key=0
             while (line!=null){
                 if (bufferedReader.ready()){
-                    line=bufferedReader.readLine()
-                    if ((line!="[") and (line!="]") ){
-                        if (line[line.length-1]==','){
-                            line= line.subSequence(0, line.length-1).toString()
-                        }
-                        val studyGroup= Json.decodeFromString<StudyGroup>(line)
-                        count_key++
-                        studyGroup.set_id(count_key)
-                        collection.add(studyGroup, count_key)
-                    }
+                    line+=bufferedReader.readLine()
                 }
                 else{
                     break
+                }
+            }
+            val list =Json.decodeFromString<List<StudyGroup>>(line)
+            val check= create_module()
+            for (i in 0..list.size-1){
+                if (check.check(list[i])){
+                    list[i].set_id(++count_key)
+                    collection.collection.put(count_key, list[i])
                 }
             }
             create_choose_command(collection, count_key)
@@ -43,5 +42,9 @@ open class Read_file: Create_choose_command {
     override fun create_choose_command(collection: Collection, count_key: Int) {
         val chooseCommand= Choose_command()
         chooseCommand.choose_coomand(collection, count_key)
+    }
+
+    override fun create_module(): Check_module {
+        return Check_module()
     }
 }
