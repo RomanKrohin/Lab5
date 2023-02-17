@@ -1,6 +1,6 @@
 class Command_help: Command(_name = "help") {
 
-    override fun _do(collection: Collection, count_key: Int) {
+    override fun _do(collection: Collection, list_of_keys: List<String>) {
         println("help : вывести справку по доступным командам\n" +
                 "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
                 "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
@@ -17,5 +17,11 @@ class Command_help: Command(_name = "help") {
                 "average_of_students_count : вывести среднее значение поля studentsCount для всех элементов коллекции\n" +
                 "print_descending : вывести элементы коллекции в порядке убывания\n" +
                 "print_field_descending_should_be_expelled : вывести значения поля shouldBeExpelled всех элементов в порядке убывания")
+    }
+
+    override fun _do(collection: Collection, list_of_keys: List<String>, key: String) {
+    }
+
+    override fun _do(collection: Collection, list_of_keys: List<String>, new_id: Int) {
     }
 }

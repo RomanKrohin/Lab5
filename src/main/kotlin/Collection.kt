@@ -1,6 +1,8 @@
+import java.util.*
+
 class Collection {
-    val collection = HashMap<Int, StudyGroup>()
-    fun add(studyGroup: StudyGroup, key: Int){
+    var collection = Hashtable<String, StudyGroup>()
+    fun add(studyGroup: StudyGroup, key: String){
         collection.put(key, studyGroup)
     }
 }

@@ -2,12 +2,15 @@ import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 
 @Serializable
-class StudyGroup(private val name: String="", private val coordinates: Coordinates, private val studentCount: Int, private val shouldBeExpelled: Int? = null, private val averageMark: Int? = null, private val formOfEducation: FormOfEducation, private val groupAdmin: Person) {
+class StudyGroup(private val name: String="", private val coordinates: Coordinates, private val studentCount: Long, private val shouldBeExpelled: Int, private val averageMark: Int, private val formOfEducation: FormOfEducation? = null, private val groupAdmin: Person) {
 
     private val localDateTime:LocalDateTime by lazy { java.time.LocalDateTime.now() }
-    private var id: Int = 0
-    fun set_id(_id: Int){
+    private var id: Long = 0
+    fun set_id(_id: Long){
         id=_id
+    }
+    fun get_id(): Long{
+        return id
     }
     fun get_name(): String{
         return name
@@ -15,16 +18,16 @@ class StudyGroup(private val name: String="", private val coordinates: Coordinat
     fun get_coordinates(): Coordinates{
         return coordinates
     }
-    fun get_studentcount(): Int{
+    fun get_studentcount(): Long{
         return studentCount
     }
-    fun get_shouldBeExpelled(): Int?{
+    fun get_shouldBeExpelled(): Int{
         return shouldBeExpelled
     }
-    fun get_averageMark(): Int?{
+    fun get_averageMark(): Int{
         return averageMark
     }
-    fun get_formOfEducation(): FormOfEducation{
+    fun get_formOfEducation(): FormOfEducation? {
         return formOfEducation
     }
     fun get_admin(): Person{

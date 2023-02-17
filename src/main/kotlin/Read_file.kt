@@ -1,5 +1,6 @@
+
+import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
@@ -19,29 +20,32 @@ open class Read_file: Create_choose_command, Create_check_module {
             var count_key=0
             while (line!=null){
                 if (bufferedReader.ready()){
-                    line+=bufferedReader.readLine()
+                    line+="\n"+bufferedReader.readLine()
                 }
                 else{
                     break
                 }
             }
-            val list =Json.decodeFromString<List<StudyGroup>>(line)
-            val check= create_module()
-            for (i in 0..list.size-1){
-                if (check.check(list[i])){
-                    list[i].set_id(++count_key)
-                    collection.collection.put(count_key, list[i])
+            val list =Yaml.default.decodeFromString<Map<String, StudyGroup>>(line)
+            val list_of_key= list.keys.toList()
+            val checkModule= create_module()
+            for (i in list_of_key){
+                if (checkModule.check(list.get(i))){
+                    list.get(i)?.set_id((++count_key).toLong())
+                    collection.add(list.get(i)!!, i)
                 }
             }
-            create_choose_command(collection, count_key)
-        } catch (e: IOException) {
+            val check= create_module()
+            create_choose_command(collection, list_of_key)
+        }
+        catch (e: IOException) {
             e.printStackTrace()
         }
     }
 
-    override fun create_choose_command(collection: Collection, count_key: Int) {
+    override fun create_choose_command(collection: Collection, list_of_keys: List<String>) {
         val chooseCommand= Choose_command()
-        chooseCommand.choose_coomand(collection, count_key)
+        chooseCommand.choose_coomand(collection, list_of_keys)
     }
 
     override fun create_module(): Check_module {

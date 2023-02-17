@@ -1,11 +1,11 @@
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Coordinates (private val x: Int, private val y:Int)  {
-    fun get_x(): Int{
+class Coordinates (private val x: Long, private val y:Long)  {
+    fun get_x(): Long{
         return x
     }
-    fun get_y(): Int{
+    fun get_y(): Long{
         return y
     }
 }
