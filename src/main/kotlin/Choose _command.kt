@@ -4,9 +4,9 @@ class Choose_command: Create_command {
     val list_of_command4= listOf<Command>(create_delete_by_key_max(), create_delete_by_key_min())
     fun choose_coomand(collection: Collection, list_of_keys: List<String>){
         while (true){
-            var coomand = readln().toLowerCase()
-            var command_component1= coomand.split(" ").toMutableList()
-            var command_component2= listOf<String>().toMutableList()
+            val coomand = readln().toLowerCase()
+            val command_component1= coomand.split(" ").toMutableList()
+            val command_component2: MutableList<String> = listOf<String>().toMutableList()
             for (i in command_component1){
                 if (!(i.equals(""))) command_component2.add(i)
             }

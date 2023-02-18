@@ -29,9 +29,18 @@ open class Read_file: Create_choose_command, Create_check_module {
             val list =Yaml.default.decodeFromString<Map<String, StudyGroup>>(line)
             val list_of_key= list.keys.toList()
             val checkModule= create_module()
-            for (i in list_of_key){
+            val list_of_id: MutableList<Int> = listOf<Int>().toMutableList()
+                for (i in list_of_key){
                 if (checkModule.check(list.get(i))){
-                    list.get(i)?.set_id((++count_key).toLong())
+                    if ((list.get(i)?.get_id()== 0.toLong()) or (list_of_id.contains(list.get(i)?.get_id()?.toInt()))){
+                        while (true){
+                            if (list_of_id.contains(++count_key)==false){
+                                list.get(i)?.set_id((count_key).toLong())
+                                break
+                            }
+                        }
+                    }
+                    list_of_id.add(list.get(i)?.get_id()?.toInt()!!)
                     collection.add(list.get(i)!!, i)
                 }
             }

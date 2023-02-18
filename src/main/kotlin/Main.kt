@@ -1,4 +1,4 @@
-fun main(){
+fun main(args: Array<String>){
     val executer: Main= Main()
     executer.execute_work()
 }
