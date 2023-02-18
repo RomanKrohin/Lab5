@@ -5,4 +5,7 @@ class Collection {
     fun add(studyGroup: StudyGroup, key: String){
         collection.put(key, studyGroup)
     }
+    fun remove(key: String){
+        collection.remove(key)
+    }
 }

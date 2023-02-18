@@ -2,17 +2,18 @@ import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.encodeToString
 
 class Command_show: Command(_name = "show") {
-    override fun _do(collection: Collection, list_of_keys: List<String>) {
-        for (i in list_of_keys){
+    override fun _do(collection: Collection) {
+        for (i in collection.collection.keys){
             if (collection.collection.get(i)!=null){
                 println(Yaml.default.encodeToString(collection.collection.get(i)))
+                println("----------")
             }
         }
     }
 
-    override fun _do(collection: Collection, list_of_keys: List<String>, key: String) {
+    override fun _do(collection: Collection, key: String) {
     }
 
-    override fun _do(collection: Collection, list_of_keys: List<String>, new_id: Int) {
+    override fun _do(collection: Collection, new_id: Int) {
     }
 }

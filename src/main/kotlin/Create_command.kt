@@ -8,4 +8,10 @@ interface Create_command {
     fun create_max_by_name(): Command
     fun create_delete_by_key_max(): Command
     fun create_delete_by_key_min(): Command
+    fun create_count_less_than_group_admin(): Command
+    fun create_print_field_descending_average_mark(): Command
+    fun create_insert(): Command
+    fun create_save(): Command
+    fun create_remove(): Command
+    fun create_history(): Command
 }
