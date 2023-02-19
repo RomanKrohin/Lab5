@@ -1,58 +1,12 @@
-class Choose_command: Create_command {
+class Choose_command: Create_command, Change_line, Work_woth_history{
     val history= listOf<String>().toMutableList()
-    val list_of_command3= listOf<Command>(create_update_id())
-    val list_of_command2=listOf<Command>(create_save(), create_history())
-    val list_of_command1= listOf<Command>(create_help(), create_exit(),create_show(), createe_info(),create_clear(), create_max_by_name(), create_print_field_descending_average_mark())
-    val list_of_command4= listOf<Command>(create_delete_by_key_max(), create_delete_by_key_min(), create_count_less_than_group_admin(), create_insert(), create_remove())
+    val list_of_command= mapOf<String, Command>("show" to create_show(), "update id" to create_update_id(),"save" to create_save(), "history" to create_history(),"help" to create_help(), "exit" to create_exit(), "info" to createe_info(), "clear" to create_clear(), "max_by_name" to create_max_by_name(), "print_field_descending_average_mark" to create_print_field_descending_average_mark(),"remove_greater_key" to create_delete_by_key_max(),"remove_lower_key" to create_delete_by_key_min(),"count_less_than_group_admin" to create_count_less_than_group_admin(),"insert" to create_insert(),"remove" to create_remove(), "execute_script" to create_execute_script())
     fun choose_coomand(collection: Collection, path: String){
         while (true){
             val coomand = readln().toLowerCase()
-            if (history.size>12){
-                history.removeAt(0)
-                history.add(coomand)
-            }
-            else{
-                history.add(coomand)
-            }
-            val command_component1= coomand.split(" ").toMutableList()
-            val command_component2: MutableList<String> = listOf<String>().toMutableList()
-            for (i in command_component1){
-                if (!(i.equals(""))) command_component2.add(i)
-            }
-            if (command_component2[0].equals("history")){
-                command_component2.add(history.toString())
-            }
-            else{
-                command_component2.add(path)
-            }
-            if (coomand.matches("""[ ]*[a-z_]{1,}[ ]*""".toRegex())){
-                for (i in list_of_command1){
-                    if (i.get_name().equals(command_component2[0])){
-                        i._do(collection)
-                    }
-                }
-            }
-            if ((coomand.matches("""\t*[a-z_]{1,}[ ]{1,}[A-Za-z_\.\/]{1,}""".toRegex())) or ((command_component2[0]+" "+command_component2[1]).matches("""\t*[a-z_]{1,}[ ]{1,}[ \[\]\,A-Za-z_\.\/]{1,}""".toRegex()))){
-                for (i in list_of_command2){
-                    if (i.get_name().equals(command_component2[0])){
-                        i._do(collection, command_component2[1])
-                    }
-                }
-            }
-            if (coomand.matches("""\t*[a-z_]{1,}[ ]{1,}[a-z_]{1,}[ ]{1,}\d{1,}\t*""".toRegex())){
-                for (i in list_of_command3){
-                    if (i.get_name().equals(command_component2[0]+" "+command_component2[1])){
-                        i._do(collection, command_component2[2].toInt())
-                    }
-                }
-            }
-            if (coomand.matches("""\t*[a-z_]{1,}[ ]{1,}-[a-z]{1}\d{1,}\t*""".toRegex())){
-                for (i in list_of_command4){
-                    if (i.get_name().equals(command_component2[0])){
-                        i._do(collection, command_component2[1].toUpperCase())
-                    }
-                }
-            }
+            work_with_array_history(history, coomand)
+            val command_component= return_command_components(coomand, path)
+            list_of_command.get(command_component[0])?._do(collection, command_component[1])
         }
     }
 
@@ -114,5 +68,46 @@ class Choose_command: Create_command {
 
     override fun create_history(): Command {
         return `Command_ history`()
+    }
+
+    override fun create_execute_script(): Command {
+        return Command_execute_script()
+    }
+
+    override fun return_command_components(command: String, path: String): MutableList<String> {
+        var command_component1= command.split(" ").toMutableList()
+        var command_component2: MutableList<String> = listOf<String>().toMutableList()
+        for (i in command_component1){
+            if (!(i.equals(""))) command_component2.add(i)
+        }
+        if (command_component2[0].equals("history")){
+            command_component2.add(history.toString())
+        }
+        if (command_component2[0].equals("save")){
+            command_component2.add(path)
+        }
+        if (command_component2[0].equals("execute_script")){
+            command_component2[1]=command_component2[1]+" "+path
+        }
+        if (command_component2.size==3){
+            command_component2[0]=command_component2[0]+" "+command_component2[1]
+            command_component2[1]=command_component2[2]
+            command_component2.removeAt(2)
+        }
+        if (command_component2.size==1){
+            command_component2.add("")
+        }
+        command_component2[1].toUpperCase()
+        return command_component2
+    }
+
+    override fun work_with_array_history(history: MutableList<String>, coomand: String) {
+        if (history.size>12){
+            history.removeAt(0)
+            history.add(coomand)
+        }
+        else{
+            history.add(coomand)
+        }
     }
 }

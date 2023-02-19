@@ -1,11 +1,6 @@
-class Comand_update_id: Command(_name = "update id"), Actions_with_collection {
-    override fun _do(collection: Collection) {
-    }
+class Comand_update_id: Command(), Actions_with_collection {
 
-    override fun _do(collection: Collection, key: String) {
-    }
-
-    override fun _do(collection: Collection, id: Int) {
+    override fun _do(collection: Collection, id: String) {
         for (i in collection.collection.keys){
             if (collection.collection.get(i)?.get_id()== id.toLong()){
                 val studyGroup= collection.collection.get(i)

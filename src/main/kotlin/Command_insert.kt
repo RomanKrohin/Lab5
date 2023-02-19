@@ -1,13 +1,11 @@
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.decodeFromString
 
-class Command_insert: Command(_name = "insert"), Actions_with_collection, Create_check_module{
-    override fun _do(collection: Collection) {
-    }
+class Command_insert: Command(), Actions_with_collection, Create_check_module{
 
     override fun _do(collection: Collection, key: String) {
         var line: String=""
-        if (!(collection.collection.keys.contains(key))){
+        if (!(collection.collection.keys.contains(key.toUpperCase()))){
             println("Enter name")
             line+="    name: "+"\""+ readln()+"\"\n"
             println("Enter coordinate x")
@@ -47,13 +45,11 @@ class Command_insert: Command(_name = "insert"), Actions_with_collection, Create
             studyGroup.set_id(count.toLong())
             val  check= create_module()
             if (check.check(studyGroup)){
-                execute_add(collection, studyGroup, key)
+                execute_add(collection, studyGroup, key.toUpperCase())
             }
         }
     }
 
-    override fun _do(collection: Collection, new_id: Int) {
-    }
 
     override fun execute_add(collection: Collection, studyGroup: StudyGroup, key: String) {
         collection.add(studyGroup, key)

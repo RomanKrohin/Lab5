@@ -5,9 +5,7 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.io.Writer
 
-class Command_save: Command(_name = "save") {
-    override fun _do(collection: Collection) {
-    }
+class Command_save: Command() {
 
     override fun _do(collection: Collection, path: String) {
         val outputStream = FileOutputStream(path)
@@ -16,7 +14,5 @@ class Command_save: Command(_name = "save") {
         writer.close()
     }
 
-    override fun _do(collection: Collection, new_id: Int) {
-    }
 
 }

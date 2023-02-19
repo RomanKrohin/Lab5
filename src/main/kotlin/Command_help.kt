@@ -1,6 +1,6 @@
-class Command_help: Command(_name = "help") {
+class Command_help: Command() {
 
-    override fun _do(collection: Collection) {
+    override fun _do(collection: Collection, key: String) {
         println("help : вывести справку по доступным командам\n" +
                 "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
                 "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
@@ -19,9 +19,4 @@ class Command_help: Command(_name = "help") {
                 "print_field_descending_should_be_expelled : вывести значения поля shouldBeExpelled всех элементов в порядке убывания")
     }
 
-    override fun _do(collection: Collection, key: String) {
-    }
-
-    override fun _do(collection: Collection, new_id: Int) {
-    }
 }

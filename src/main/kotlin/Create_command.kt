@@ -14,4 +14,5 @@ interface Create_command {
     fun create_save(): Command
     fun create_remove(): Command
     fun create_history(): Command
+    fun create_execute_script(): Command
 }

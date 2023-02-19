@@ -1,8 +1,9 @@
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.encodeToString
 
-class Command_max_name: Command(_name = "max_by_name") {
-    override fun _do(collection: Collection) {
+class Command_max_name: Command() {
+
+    override fun _do(collection: Collection, key: String) {
         var max_key=""
         var max_name=""
         for (i in collection.collection.keys){
@@ -14,9 +15,4 @@ class Command_max_name: Command(_name = "max_by_name") {
         println(Yaml.default.encodeToString(collection.collection.get(max_key)))
     }
 
-    override fun _do(collection: Collection, key: String) {
-    }
-
-    override fun _do(collection: Collection, new_id: Int) {
-    }
 }

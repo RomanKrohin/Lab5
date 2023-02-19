@@ -1,12 +1,6 @@
-class Command_remove: Command(_name = "remove"), Actions_with_collection {
-    override fun _do(collection: Collection) {
-    }
-
+class Command_remove: Command(), Actions_with_collection {
     override fun _do(collection: Collection, key: String) {
-        execute_remove(collection, key)
-    }
-
-    override fun _do(collection: Collection, new_id: Int) {
+        execute_remove(collection, key.toUpperCase())
     }
 
     override fun execute_add(collection: Collection, studyGroup: StudyGroup, key: String) {
