@@ -1,0 +1,18 @@
+package Commands
+import com.charleskorn.kaml.Yaml
+import kotlinx.serialization.encodeToString
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+import java.io.Writer
+
+class Command_save: Command() {
+
+    override fun _do(collection: Collections.Collection, key: String) {
+        val outputStream = FileOutputStream(key)
+        val writer: Writer = OutputStreamWriter(outputStream)
+        writer.write(Yaml.default.encodeToString(collection.collection.toMap()))
+        writer.close()
+    }
+
+
+}
