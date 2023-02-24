@@ -11,12 +11,14 @@ import java.io.IOException
 open class Read_file: Create_choose_command, Create_check_module {
 
     var path: String = ""
-
+    //Экспорт пути файла, передаваемого через аргумент команды
     fun export_file(path_file: String){
         path =  path_file
     }
 
+    //Метод чтения файла
     fun read_file(collection: Collection){
+        //Блок чтения строк из файла
         val bufferedReader= BufferedReader(FileReader(path))
         try {
             var line: String=""
@@ -29,8 +31,12 @@ open class Read_file: Create_choose_command, Create_check_module {
                     break
                 }
             }
+            //
+            //Сериализация данных полученных из файла
             val list =Yaml.default.decodeFromString<Map<String, StudyGroup>>(line)
+            //Создание экземпляра проверочного модуля
             val checkModule= create_module()
+            //Генерация уникального id и добавление объектов в колекцию
             val list_of_id: MutableList<Int> = listOf<Int>().toMutableList()
                 for (i in list.keys){
                     if (checkModule.check(list.get(i))){
@@ -46,18 +52,19 @@ open class Read_file: Create_choose_command, Create_check_module {
                         collection.add(list.get(i)!!, i)
                     }
             }
+            //Начало выборки команды
             create_choose_command(collection, path)
         }
         catch (e: IOException) {
             e.printStackTrace()
         }
     }
-
+    //Интерфейс создания выборки команды
     override fun create_choose_command(collection: Collection, path: String) {
         val chooseCommand= Choose_command()
         chooseCommand.choose_coomand(collection, path)
     }
-
+    //Интерфейс создания проверочного модуля
     override fun create_module(): Check_module {
         return Check_module()
     }

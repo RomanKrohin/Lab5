@@ -5,7 +5,9 @@ import Study_group_information.StudyGroup
 
 class Command_clear : Command(), Actions_with_collection {
 
+    //Команда очищающая колекцию
     override fun _do(collection: Collections.Collection, key: String) {
+        //Цикл выдергивает объекты по их ключам
         for (i in collection.collection.keys){
             execute_remove(collection, i)
             collection.collection.keys.remove(i)

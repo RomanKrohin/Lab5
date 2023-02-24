@@ -5,11 +5,19 @@ import java.io.BufferedReader
 import java.io.FileReader
 
 class Command_execute_script: Command(), Change_line, Create_command {
+    //Команда читает файл и выполняет команды, написанные в нем
+
+    //Коллекция в которой сохранены все экземпляры команд
     val list_of_command= mapOf<String, Command>("show" to create_show(), "update id" to create_update_id(),"save" to create_save(),"help" to create_help(), "exit" to create_exit(), "info" to createe_info(), "clear" to create_clear(), "max_by_name" to create_max_by_name(), "print_field_descending_average_mark" to create_print_field_descending_average_mark(),"remove_greater_key" to create_delete_by_key_max(),"remove_lower_key" to create_delete_by_key_min(),"count_less_than_group_admin" to create_count_less_than_group_admin(),"insert" to create_insert(),"remove" to create_remove())
+
+    //Метод работы команды
     override fun _do(collection: Collections.Collection, key: String) {
+        //Считывание компоненты пути к файлу
         val components= key.split(" ").toMutableList()
+        //Чтение файла
         val bufferedReader= BufferedReader(FileReader(components.get(0)))
-            var coomand = ""
+        var coomand = ""
+        //Цикл считывает строки из файла и нормализует их, производит выборку и реализует метод работы команды
             while (true){
                 if (bufferedReader.ready()){
                     coomand=bufferedReader.readLine()
@@ -22,6 +30,7 @@ class Command_execute_script: Command(), Change_line, Create_command {
             }
     }
 
+    //Блок нормализации строки (такой же, как и при выборке команды, но без блока команды: history и exexute_script)
     override fun return_command_components(command: String, path: String): MutableList<String> {
         val command_component1= command.split(" ").toMutableList()
         val command_component2: MutableList<String> = listOf<String>().toMutableList()
@@ -42,7 +51,7 @@ class Command_execute_script: Command(), Change_line, Create_command {
         command_component2[1].toUpperCase()
         return command_component2
     }
-
+    //Блок создание экземпляров команд
     override fun create_help(): Command {
         return Command_help()
     }
@@ -106,5 +115,5 @@ class Command_execute_script: Command(), Change_line, Create_command {
     override fun create_execute_script(): Command {
         return Command_execute_script()
     }
-
+    //
 }

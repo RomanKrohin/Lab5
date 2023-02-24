@@ -2,6 +2,7 @@ package Commands
 
 class Command_help: Command() {
 
+    //Команда выводит список доступных команд
     override fun _do(collection: Collections.Collection, key: String) {
         println("help : вывести справку по доступным командам\n" +
                 "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
