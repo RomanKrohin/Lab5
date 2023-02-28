@@ -1,7 +1,9 @@
 package Commands
 
+import StudyGroupInformation.StudyGroup
+
 abstract class Command() {
     //Абстрактный класс от которого наследуются все другие команды
-    abstract fun _do(collection: Collections.Collection, key: String)
+    abstract fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String)
 
 }
