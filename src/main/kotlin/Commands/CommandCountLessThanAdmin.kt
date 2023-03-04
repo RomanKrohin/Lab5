@@ -14,10 +14,10 @@ class CommandCountLessThanAdmin: Command() {
         try{
             //Цикл проходиться по всей коллекции, сравнивает поля с заданным объектом и выводит которые подходят под условие
             val groupAdminHash: Int = collection.collection.get(key.uppercase(Locale.getDefault()))?.getAdmin()!!.hashCode()
-            for (i in collection.collection.keys){
-                val buf:Int= collection.collection.get(i)!!.getAdmin().hashCode()
+            for (i in collection.collection.values){
+                val buf:Int= i.getAdmin().hashCode()
                 if (buf<groupAdminHash) {
-                    println(Yaml.default.encodeToString(collection.collection.get(i)))
+                    println(Yaml.default.encodeToString(i))
                 }
             }
         }

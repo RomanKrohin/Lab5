@@ -1,5 +1,3 @@
-import org.gradle.jvm.tasks.Jar
-
 plugins {
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.serialization") version "1.5.0"
@@ -39,17 +37,7 @@ tasks.named<JavaExec>("run"){
     standardInput=System.`in`
 }
 
-tasks.withType<Jar>() {
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-
-    configurations["compileClasspath"].forEach{file: File? ->
-        from(zipTree(file!!.absoluteFile))
-    }
-    configurations["testCompileClasspath"].forEach{file: File? ->
-        from(zipTree(file!!.absoluteFile))
-    }
-}
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions.jvmTarget = "11"
 }

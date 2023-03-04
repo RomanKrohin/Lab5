@@ -8,8 +8,8 @@ class CommandPrintFieldDescendingAverageMark: Command() {
     override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
         try {
             val list: MutableList<Int> = listOf<Int>().toMutableList()
-            for (i in collection.collection.keys){
-                list.add(collection.collection.get(i)?.getAverageMark()!!)
+            for (i in collection.collection.values){
+                list.add(i.getAverageMark())
             }
             println(list.toList().sorted().reversed().toString())
         }

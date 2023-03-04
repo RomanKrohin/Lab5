@@ -1,3 +1,4 @@
+
 import Collections.Collection
 import StudyGroupInformation.StudyGroup
 import WorkModuls.CreateCollection
@@ -35,7 +36,7 @@ class Executer(path: String) : ExecuteActionsWithRead, CreateCollection {
     }
 
     //Создание экземпляра коллекции
-    override fun createCollection(): Collection<String, StudyGroup> {
+    override fun createCollection(): Collection <String, StudyGroup>{
         return Collection()
     }
 
