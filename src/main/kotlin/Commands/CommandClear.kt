@@ -1,11 +1,20 @@
 package Commands
 
 import Collections.ActionsWithCollection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 
 class CommandClear : Command(), ActionsWithCollection {
+    /**
+     * Класс команды очищающая коллекцию
+     */
 
     //Команда очищающая колекцию
+    /**
+     *  Метод работы команды
+     *  @param collection
+     *  @param key
+     */
     override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
         try {
             //Цикл выдергивает объекты по их ключам
@@ -14,9 +23,8 @@ class CommandClear : Command(), ActionsWithCollection {
                 collection.collection.keys.remove(i)
             }
         }
-        catch (e: Exception){
-            println("Command exception")
-            e.printStackTrace()
+        catch (e: CommandException){
+            throw e
         }
 
     }

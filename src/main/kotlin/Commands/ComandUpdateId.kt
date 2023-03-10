@@ -2,10 +2,20 @@ package Commands
 
 import Collections.ActionsWithCollection
 import Collections.Collection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 
 class ComandUpdateId: Command(), ActionsWithCollection {
     //Команда обновления id у объекта
+    /**
+     * Класс команды, которая обновляет id объекта коллекции по его ключу
+     */
+
+    /**
+     *  Метод работы команды
+     *  @param collection
+     *  @param key
+     */
     override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
         try {
             //Метод находит объект по его ключу и если id, которые хотят установить уникален в рамках данной коллекции,
@@ -22,9 +32,8 @@ class ComandUpdateId: Command(), ActionsWithCollection {
                 }
             }
         }
-        catch (e: Exception){
-            println("Command exception")
-            e.printStackTrace()
+        catch (e: CommandException){
+            throw e
         }
 
     }

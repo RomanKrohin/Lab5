@@ -1,6 +1,7 @@
 package Commands
 
 import Collections.Collection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.CreateCommand
 import java.io.BufferedReader
@@ -8,11 +9,19 @@ import java.io.FileReader
 import java.util.*
 
 class CommandExecuteScript: Command(), ChangeLine, CreateCommand {
+    /**
+     * Класс команды, которая читает файл и выполняет команды, написанные в нем
+     */
     //Команда читает файл и выполняет команды, написанные в нем
 
     //Коллекция в которой сохранены все экземпляры команд
     val list_of_command= createCommnads()
     //Метод работы команды
+    /**
+     *  Метод работы команды
+     *  @param collection
+     *  @param key
+     */
     override fun commandDo(collection: Collection<String, StudyGroup>, key: String) {
         try {
             //Считывание компоненты пути к файлу
@@ -32,9 +41,8 @@ class CommandExecuteScript: Command(), ChangeLine, CreateCommand {
                 }
             }
         }
-        catch (e: Exception){
-            println("Command exception")
-            e.printStackTrace()
+        catch (e: CommandException){
+            throw e
         }
     }
 

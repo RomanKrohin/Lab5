@@ -1,15 +1,23 @@
 package Commands
 
 import Collections.Collection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.encodeToString
 import java.util.*
 
 class CommandCountLessThanAdmin: Command() {
+    /**
+     * Класс команды, которая выводит объекты значение поля group admin меньше чем у заданного
+     */
 
     //Команда, которая выводит объекты значение поля group admin меньше чем у заданного
-
+    /**
+     *  Метод работы команды
+     *  @param collection
+     *  @param key
+     */
     override fun commandDo(collection: Collection<String, StudyGroup>, key: String) {
         try{
             //Цикл проходиться по всей коллекции, сравнивает поля с заданным объектом и выводит которые подходят под условие
@@ -21,9 +29,8 @@ class CommandCountLessThanAdmin: Command() {
                 }
             }
         }
-        catch (e: Exception){
-            println("Command exception")
-            e.printStackTrace()
+        catch (e: CommandException){
+            throw e
         }
     }
 

@@ -2,13 +2,21 @@ package Commands
 
 import Collections.ActionsWithCollection
 import Collections.Collection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import java.util.*
 
 class CommandDeleteByMinKey: Command(), ActionsWithCollection {
-
+    /**
+     * Класс, команды, которая удаляет объекты значение ключа которых меньше чем у заданного
+     */
     //Команда удаляет объекты значение ключа которых меньше чем у заданного
 
+    /**
+     *  Метод работы команды
+     *  @param collection
+     *  @param key
+     */
     override fun commandDo(collection: Collection<String, StudyGroup>, key: String) {
         try {
             //Цикл проходиться по коллекции, сравнивает и удаляет подходящие объекты
@@ -20,9 +28,8 @@ class CommandDeleteByMinKey: Command(), ActionsWithCollection {
                 }
             }
         }
-        catch (e: Exception){
-            println("Command exception")
-            e.printStackTrace()
+        catch (e: CommandException){
+            throw e
         }
     }
 

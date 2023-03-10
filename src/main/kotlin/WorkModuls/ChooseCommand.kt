@@ -2,18 +2,30 @@ package WorkModuls
 
 import Collections.Collection
 import Commands.*
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
-import java.io.IOException
 import java.util.*
 
 class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
+
+    /**
+     * Класс выборки команды, здесь команды обрабатываются и выбирается
+     * подходящие
+     * @param history
+     * @param listOfCommand
+     */
     //Инициализация массива истории команд(Туда сохраняются команды)
     val history = listOf<String>().toMutableList()
 
     //Инициализация map в котором храняться экземпляры команды (ключами выступают их названия)
-    val list_of_command = createCommnads()
+    val listOfCommand = createCommnads()
 
     //Метод выборки команды
+    /**
+     * Метод выборки команды
+     * @param collection
+     * @param path
+     */
     fun chooseCoomand(collection: Collection<String, StudyGroup>, path: String) {
         //Чтение команды из потока ввода будет происходить до команды exit
         while (true) {
@@ -24,10 +36,9 @@ class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
                 //Нормализация компонент команды(массив в котором храняться название команды и ее аргумент)
                 val commandComponent = returnCommandComponents(coomand, path)
                 //Вызов метода работы команды
-                list_of_command.get(commandComponent[0])?.commandDo(collection, commandComponent[1])
-            } catch (e: IOException) {
-                println("Command execption")
-                e.printStackTrace()
+                listOfCommand.get(commandComponent[0])?.commandDo(collection, commandComponent[1])
+            } catch (e: CommandException) {
+                throw e
             }
 
         }

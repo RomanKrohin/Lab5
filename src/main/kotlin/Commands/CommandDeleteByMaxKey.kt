@@ -2,12 +2,21 @@ package Commands
 
 import Collections.ActionsWithCollection
 import Collections.Collection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import java.util.*
 
 class CommandDeleteByMaxKey: Command(), ActionsWithCollection {
-
     //Команада удаляет объекты, значение ключа которого больше чем у заданного
+    /**
+     * Класс команды, которая удаляет объекты, значение ключа которого больше чем у заданного
+     */
+
+    /**
+     *  Метод работы команды
+     *  @param collection
+     *  @param key
+     */
     override fun commandDo(collection: Collection<String, StudyGroup>, key: String) {
         try {
             //Цикл проходиться по коллекции и удаляет подходящие под условие объекты
@@ -19,9 +28,8 @@ class CommandDeleteByMaxKey: Command(), ActionsWithCollection {
                 }
             }
         }
-        catch (e: Exception){
-            println("Command exception")
-            e.printStackTrace()
+        catch (e: CommandException){
+            throw e
         }
     }
 

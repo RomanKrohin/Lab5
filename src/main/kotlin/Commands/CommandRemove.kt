@@ -2,19 +2,27 @@ package Commands
 
 import Collections.ActionsWithCollection
 import Collections.Collection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import java.util.*
 
 class CommandRemove: Command(), ActionsWithCollection {
+    /**
+     * Класс команды, которая удаляет объект из коллекции по его ключу
+     */
 
     //Команда удаляет объект из коллекции по его ключу
+    /**
+     *  Метод работы команды
+     *  @param collection
+     *  @param key
+     */
     override fun commandDo(collection: Collection<String, StudyGroup>, key: String) {
         try {
             executeRemove(collection, key.uppercase(Locale.getDefault()))
         }
-        catch (e: Exception){
-            println("Command exception")
-            e.printStackTrace()
+        catch (e: CommandException){
+            throw e
         }
     }
     //Интерфейсы для работы с коллекцией
