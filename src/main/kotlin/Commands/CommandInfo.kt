@@ -1,9 +1,18 @@
 package Commands
 
+import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 
-class CommandInfo: Command(){
+class CommandInfo(workCollection: Collections.Collection<String, StudyGroup>): Command(){
+
+    var collection: Collection<String, StudyGroup>
+    var key: String = null.toString()
+    init {
+        collection=workCollection
+
+    }
     /**
      * Класс команды, которая выводит информацию о коллекции
      */
@@ -13,13 +22,15 @@ class CommandInfo: Command(){
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
-            println("Collection: HashTable\n"+"Size "+collection.collection.size+"\n"+java.time.LocalTime.now())
+            answer.setterResult("Collection: HashTable\n"+"Size "+collection.collection.size+"\n"+java.time.LocalTime.now())
         }
         catch (e: CommandException){
             throw e
         }
+        return answer
     }
 
 }

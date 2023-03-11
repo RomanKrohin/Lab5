@@ -1,11 +1,17 @@
 package Commands
 
+import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.encodeToString
 
-class CommandMaxName: Command() {
+class CommandMaxName(workCollection: Collections.Collection<String, StudyGroup>): Command() {
+    var collection: Collection<String, StudyGroup>
+    init {
+        collection=workCollection
+    }
     /**
      * Класс команды, которая выводит объект, значение поля name которого наибольшее
      */
@@ -15,7 +21,8 @@ class CommandMaxName: Command() {
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
             var max_key=""
             var max_name=""
@@ -27,12 +34,12 @@ class CommandMaxName: Command() {
                     max_name= collection.collection.get(i)!!.getName()
                 }
             }
-            println(Yaml.default.encodeToString(collection.collection.get(max_key)))
+            answer.setterResult(Yaml.default.encodeToString(collection.collection.get(max_key)))
         }
         catch (e: CommandException){
             throw e
         }
-
+        return answer
     }
 
 }

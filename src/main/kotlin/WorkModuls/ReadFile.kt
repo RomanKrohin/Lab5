@@ -66,8 +66,7 @@ open class ReadFile(pathFile: String): StartChooseCommand, CreateCheckModule, Ac
     }
     //Интерфейс создания выборки команды
     override fun startChooseCommand(collection: Collection<String, StudyGroup>, path: String) {
-        val chooseCommand= ChooseCommand()
-        chooseCommand.chooseCoomand(collection, path)
+        Reader().reader(collection, path)
     }
     //Интерфейс создания проверочного модуля
     override fun createModule(): CheckModule {

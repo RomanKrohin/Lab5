@@ -1,6 +1,6 @@
 package Commands
 
-import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 
 abstract class Command() {
     /**
@@ -12,6 +12,6 @@ abstract class Command() {
      *  @param collection
      *  @param key
      */
-    abstract fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String)
+    abstract fun commandDo(key: String): Answer
 
 }

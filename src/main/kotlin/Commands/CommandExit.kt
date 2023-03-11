@@ -1,7 +1,7 @@
 package Commands
 
 import Exceptions.CommandException
-import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 import kotlin.system.exitProcess
 
 class CommandExit: Command() {
@@ -15,13 +15,15 @@ class CommandExit: Command() {
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String) : Answer{
+        val answer= Answer()
         try {
             exitProcess(0)
         }
         catch (e: CommandException){
             throw e
         }
+        return answer
     }
 
 }

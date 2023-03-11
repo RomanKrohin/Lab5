@@ -1,9 +1,15 @@
 package Commands
 
+import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 
-class CommandPrintFieldDescendingAverageMark: Command() {
+class CommandPrintFieldDescendingAverageMark(workCollection: Collections.Collection<String, StudyGroup>): Command() {
+    var collection: Collection<String, StudyGroup>
+    init {
+        collection=workCollection
+    }
     /**
      * Класс команды, которая выводит в порядке убывания значение поля average mark всех объектов
      */
@@ -14,17 +20,19 @@ class CommandPrintFieldDescendingAverageMark: Command() {
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
             val list: MutableList<Int> = listOf<Int>().toMutableList()
             for (i in collection.collection.values){
                 list.add(i.getAverageMark())
             }
-            println(list.toList().sorted().reversed().toString())
+            answer.setterResult(list.toList().sorted().reversed().toString())
         }
         catch (e: CommandException){
             throw e
         }
+        return Answer()
     }
 
 }

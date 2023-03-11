@@ -1,6 +1,7 @@
 package WorkModuls
 
 import Commands.Command
+import StudyGroupInformation.StudyGroup
 
 interface CreateCommand {
     /**
@@ -11,5 +12,5 @@ interface CreateCommand {
      * Метод для создания массива команд
      * @return Map<String, Command>
      */
-    fun createCommnads() : Map<String, Command>
+    fun createCommnads(collection: Collections.Collection<String, StudyGroup>) : Map<String, Command>
 }

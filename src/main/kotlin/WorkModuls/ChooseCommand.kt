@@ -2,11 +2,11 @@ package WorkModuls
 
 import Collections.Collection
 import Commands.*
-import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import java.util.*
 
-class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
+class ChooseCommand(collection: Collection<String, StudyGroup>) : CreateCommand, ChangeLine, WorkWothHistory {
+    val listOfCommand= createCommnads(collection)
 
     /**
      * Класс выборки команды, здесь команды обрабатываются и выбирается
@@ -18,7 +18,6 @@ class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
     private val history = listOf<String>().toMutableList()
 
     //Инициализация map в котором храняться экземпляры команды (ключами выступают их названия)
-    private val listOfCommand = createCommnads()
 
     //Метод выборки команды
     /**
@@ -26,22 +25,13 @@ class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
      * @param collection
      * @param path
      */
-    fun chooseCoomand(collection: Collection<String, StudyGroup>, path: String) {
+    fun chooseCoomand(commandComponent: MutableList<String>): Answer {
         //Чтение команды из потока ввода будет происходить до команды exit
-        while (true) {
-            try {
-                val coomand = readln().lowercase(Locale.getDefault())
-                //Работа и историей (запоминаем команды)
-                workWithArrayHistory(history, coomand)
-                //Нормализация компонент команды(массив в котором хранятся название команды и ее аргумент)
-                val commandComponent = returnCommandComponents(coomand, path)
-                //Вызов метода работы команды
-                listOfCommand.get(commandComponent[0])?.commandDo(collection, commandComponent[1])
-            } catch (e: CommandException) {
-                throw e
-            }
+                //Вызов метода работы команды4
+                val command = listOfCommand[commandComponent[0]]
+                val answer= listOfCommand.get(commandComponent[0])?.commandDo(commandComponent[1])
+                return answer!!
 
-        }
     }
 
 
@@ -90,24 +80,24 @@ class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
         }
     }
 
-    override fun createCommnads(): Map<String, Command> {
+    override fun createCommnads(collection: Collection<String, StudyGroup>): Map<String, Command> {
         return mapOf<String, Command>(
-            "show" to CommandShow(),
-            "update id" to ComandUpdateId(),
-            "save" to CommandSave(),
-            "history" to CommandHistory(),
+            "show" to CommandShow(collection),
+            "update id" to ComandUpdateId(collection),
+            "save" to CommandSave(collection),
+            "history" to CommandHistory(collection),
             "help" to CommandHelp(),
             "exit" to CommandExit(),
-            "info" to CommandInfo(),
-            "clear" to CommandClear(),
-            "max_by_name" to CommandMaxName(),
-            "print_field_descending_average_mark" to CommandPrintFieldDescendingAverageMark(),
-            "remove_greater_key" to CommandDeleteByMaxKey(),
-            "remove_lower_key" to CommandDeleteByMinKey(),
-            "count_less_than_group_admin" to CommandCountLessThanAdmin(),
-            "insert" to CommandInsert(),
-            "remove" to CommandRemove(),
-            "execute_script" to CommandExecuteScript()
+            "info" to CommandInfo(collection),
+            "clear" to CommandClear(collection),
+            "max_by_name" to CommandMaxName(collection),
+            "print_field_descending_average_mark" to CommandPrintFieldDescendingAverageMark(collection),
+            "remove_greater_key" to CommandDeleteByMaxKey(collection),
+            "remove_lower_key" to CommandDeleteByMinKey(collection),
+            "count_less_than_group_admin" to CommandCountLessThanAdmin(collection),
+            "insert" to CommandInsert(collection),
+            "remove" to CommandRemove(collection),
+            "execute_script" to CommandExecuteScript(collection)
         )
     }
 }

@@ -1,9 +1,15 @@
 package Commands
 
+import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 
-class CommandHistory : Command() {
+class CommandHistory(workCollection: Collections.Collection<String, StudyGroup>) : Command() {
+    var collection: Collection<String, StudyGroup>
+    init {
+        collection=workCollection
+    }
     /**
      * Класс команды, который выводит последние 12 введенных команд
      */
@@ -14,15 +20,16 @@ class CommandHistory : Command() {
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
             //Вывод массива команды, которые были вложены в массив
-            println(key)
+            answer.setterResult(key)
         }
         catch (e: CommandException){
             throw e
         }
-
+    return answer
     }
 
 }

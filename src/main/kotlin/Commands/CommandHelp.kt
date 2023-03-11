@@ -1,6 +1,6 @@
 package Commands
 
-import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 
 class CommandHelp: Command() {
     /**
@@ -12,8 +12,9 @@ class CommandHelp: Command() {
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
-        println("help : вывести справку по доступным командам\n" +
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
+        answer.setterResult("help : вывести справку по доступным командам\n" +
                 "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n" +
                 "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n" +
                 "insert {key} : добавить новый элемент с заданным ключом\n" +
@@ -28,6 +29,7 @@ class CommandHelp: Command() {
                 "remove_greater_key {key} : удалить из коллекции все элементы, ключ которых превышает заданный\n" +
                 "average_of_students_count : вывести среднее значение поля studentsCount для всех элементов коллекции\n" +
                 "print_field_descending_should_be_expelled : вывести значения поля shouldBeExpelled всех элементов в порядке убывания")
+        return answer
     }
 
 }

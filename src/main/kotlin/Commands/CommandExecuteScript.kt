@@ -3,26 +3,31 @@ package Commands
 import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 import WorkModuls.CreateCommand
 import java.io.BufferedReader
 import java.io.FileReader
 import java.util.*
 
-class CommandExecuteScript: Command(), ChangeLine, CreateCommand {
+class CommandExecuteScript(workCollection: Collection<String, StudyGroup>): Command(), ChangeLine, CreateCommand {
+    var collection: Collection<String, StudyGroup>
+    init {
+        collection=workCollection
+    }
     /**
      * Класс команды, которая читает файл и выполняет команды, написанные в нем
      */
     //Команда читает файл и выполняет команды, написанные в нем
 
     //Коллекция в которой сохранены все экземпляры команд
-    val list_of_command= createCommnads()
     //Метод работы команды
     /**
      *  Метод работы команды
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
             //Считывание компоненты пути к файлу
             val components= key.split(" ").toMutableList()
@@ -34,7 +39,8 @@ class CommandExecuteScript: Command(), ChangeLine, CreateCommand {
                 if (bufferedReader.ready()){
                     coomand=bufferedReader.readLine()
                     val command_component= returnCommandComponents(coomand, components[1])
-                    list_of_command.get(command_component[0])?.commandDo(collection, command_component[1])
+                    val listOfCommand= createCommnads(collection)
+                    listOfCommand.get(command_component[0])?.commandDo(components[1])
                 }
                 else{
                     break
@@ -44,6 +50,7 @@ class CommandExecuteScript: Command(), ChangeLine, CreateCommand {
         catch (e: CommandException){
             throw e
         }
+        return answer
     }
 
     //Блок нормализации строки (такой же, как и при выборке команды, но без блока команды: history и execute_script)
@@ -67,22 +74,22 @@ class CommandExecuteScript: Command(), ChangeLine, CreateCommand {
         command_component2[1].uppercase(Locale.getDefault())
         return command_component2
     }
-    override fun createCommnads(): Map<String, Command> {
+    override fun createCommnads(collection: Collection<String, StudyGroup>): Map<String, Command> {
         return mapOf<String, Command>(
-            "show" to CommandShow(),
-            "update id" to ComandUpdateId(),
-            "save" to CommandSave(),
+            "show" to CommandShow(collection),
+            "update id" to ComandUpdateId(collection),
+            "save" to CommandSave(collection),
             "help" to CommandHelp(),
             "exit" to CommandExit(),
-            "info" to CommandInfo(),
-            "clear" to CommandClear(),
-            "max_by_name" to CommandMaxName(),
-            "print_field_descending_average_mark" to CommandPrintFieldDescendingAverageMark(),
-            "remove_greater_key" to CommandDeleteByMaxKey(),
-            "remove_lower_key" to CommandDeleteByMinKey(),
-            "count_less_than_group_admin" to CommandCountLessThanAdmin(),
-            "insert" to CommandInsert(),
-            "remove" to CommandRemove()
+            "info" to CommandInfo(collection),
+            "clear" to CommandClear(collection),
+            "max_by_name" to CommandMaxName(collection),
+            "print_field_descending_average_mark" to CommandPrintFieldDescendingAverageMark(collection),
+            "remove_greater_key" to CommandDeleteByMaxKey(collection),
+            "remove_lower_key" to CommandDeleteByMinKey(collection),
+            "count_less_than_group_admin" to CommandCountLessThanAdmin(collection),
+            "insert" to CommandInsert(collection),
+            "remove" to CommandRemove(collection)
         )
     }
 }

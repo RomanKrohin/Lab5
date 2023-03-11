@@ -1,13 +1,16 @@
 package Commands
 
 import Collections.ActionsWithCollection
+import Collections.Collection
+import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
-import WorkModuls.Asker
-import WorkModuls.CheckModule
-import WorkModuls.CreateAsker
-import WorkModuls.CreateCheckModule
+import WorkModuls.*
 
-class CommandInsert: Command(), ActionsWithCollection, CreateCheckModule, CreateAsker {
+class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>): Command(), ActionsWithCollection, CreateCheckModule, CreateAsker {
+    var collection: Collection<String, StudyGroup>
+    init {
+        collection=workCollection
+    }
     /**
      * Класс команды, которая добавляет объект по его ключу
      */
@@ -18,7 +21,8 @@ class CommandInsert: Command(), ActionsWithCollection, CreateCheckModule, Create
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
             val asker= createAsker()
             val studyGroup= asker.askStudyGroup()
@@ -29,9 +33,10 @@ class CommandInsert: Command(), ActionsWithCollection, CreateCheckModule, Create
             studyGroup.setId(listOfId.max()+1)
             executeAdd(collection, studyGroup, key)
         }
-        catch (e: Exception){
-            println("Command exception")
+        catch (e: CommandException){
+            throw e
         }
+        return answer
     }
 
     //Интерфейсы для работы с коллекцией

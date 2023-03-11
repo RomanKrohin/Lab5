@@ -1,10 +1,16 @@
 package Commands
 
 import Collections.ActionsWithCollection
+import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 
-class CommandClear : Command(), ActionsWithCollection {
+class CommandClear(workCollection: Collections.Collection<String, StudyGroup>) : Command(), ActionsWithCollection {
+    var collection: Collection<String, StudyGroup>
+    init {
+        collection=workCollection
+    }
     /**
      * Класс команды очищающая коллекцию
      */
@@ -15,7 +21,8 @@ class CommandClear : Command(), ActionsWithCollection {
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
             //Цикл выдергивает объекты по их ключам
             val listOfKeys= collection.collection.keys()
@@ -26,8 +33,9 @@ class CommandClear : Command(), ActionsWithCollection {
         catch (e: CommandException){
             throw e
         }
-
+        return answer
     }
+
     override fun executeAdd(collection: Collections.Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
         collection.add(studyGroup, key)
     }

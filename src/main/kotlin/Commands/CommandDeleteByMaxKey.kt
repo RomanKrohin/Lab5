@@ -4,9 +4,14 @@ import Collections.ActionsWithCollection
 import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
+import WorkModuls.Answer
 import java.util.*
 
-class CommandDeleteByMaxKey: Command(), ActionsWithCollection {
+class CommandDeleteByMaxKey(workCollection: Collection<String, StudyGroup>): Command(), ActionsWithCollection {
+    var collection: Collection<String, StudyGroup>
+    init {
+        collection=workCollection
+    }
     //Команада удаляет объекты, значение ключа которого больше чем у заданного
     /**
      * Класс команды, которая удаляет объекты, значение ключа которого больше чем у заданного
@@ -17,7 +22,8 @@ class CommandDeleteByMaxKey: Command(), ActionsWithCollection {
      *  @param collection
      *  @param key
      */
-    override fun commandDo(collection: Collection<String, StudyGroup>, key: String) {
+    override fun commandDo(key: String): Answer {
+        val answer= Answer()
         try {
             //Цикл проходиться по коллекции и удаляет подходящие под условие объекты
             if (collection.collection.keys.contains(key.uppercase(Locale.getDefault()))){
@@ -31,6 +37,7 @@ class CommandDeleteByMaxKey: Command(), ActionsWithCollection {
         catch (e: CommandException){
             throw e
         }
+        return answer
     }
 
     override fun executeAdd(collection: Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {

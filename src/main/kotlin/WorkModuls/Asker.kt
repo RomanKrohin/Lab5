@@ -5,7 +5,7 @@ import java.util.function.Predicate
 
 
 typealias  TypeCaster<T> = (userInput: String) -> T
-class Asker {
+class Asker: WorkWithPrinter {
     /**
      * Класс для работы команды insert. Пошагово вводит поля, запрпашивая от пользователя
      * введение правильных данных при их ошибочном введении
@@ -31,17 +31,20 @@ class Asker {
             catch (e: Exception){
                 when (e){
                     is NumberFormatException -> {
-                        println("Некорректный ввод числа. Попробуйте еще.")
+                        val printer= createPrinter()
+                        printer.printHint("Некорректный ввод числа. Попробуйте еще.")
                         continue
                     }
 
                     is IllegalArgumentException -> {
-                        println("Некорректный ввод enum.")
+                        val printer= createPrinter()
+                        printer.printHint("Некорректный ввод enum.")
                         continue
                     }
 
                     else -> {
-                        println("Некорректный ввод. Попробуйте еще.")
+                        val printer= createPrinter()
+                        printer.printHint("Некорректный ввод. Попробуйте еще.")
                         continue
                     }
                 }
@@ -49,7 +52,7 @@ class Asker {
             if (validator.test(output)){
                 break
             } else{
-                println("Некорректный ввод. Попробуйте еще.")
+                Printer().printHint("Некорректный ввод. Попробуйте еще.")
             }
         }
         return output
@@ -83,13 +86,14 @@ class Asker {
      * @return Person
      */
     fun askPerson(): Person{
-        println("Введите имя админа")
+        val printer= createPrinter()
+        printer.printHint("Введите имя админа")
         val name = readType(caster = { it }, validator = {it.isNotEmpty()})
-        println("Введите его вес")
+        printer.printHint("Введите его вес")
         val weight = readType(caster = toIntCaster, validator = {it >0})
-        println("Введите его цвет, ${Color.values().map { it.toString() }}")
+        printer.printHint("Введите его цвет, ${Color.values().map { it.toString() }}")
         val color = readType(caster = {toEnumCaster<Color>(it)}, validator = {true})
-        println("Введите его национальность ${Country.values().map { it.toString() }}")
+        printer.printHint("Введите его национальность ${Country.values().map { it.toString() }}")
         val nationality = readType(caster = {toEnumCaster<Country>(it)}, validator = {true})
         return Person(
             name,
@@ -103,9 +107,10 @@ class Asker {
      * @return Coordinates
      */
     fun askCoordinates(): Coordinates{
-        println("Введите координату х")
+        val printer= createPrinter()
+        printer.printHint("Введите координату х")
         val x = readType(caster = toLongCaster, validator = { it <= 42})
-        println("Введите координату у")
+        printer.printHint("Введите координату у")
         val y = readType(caster = toLongCaster, validator = {it>-612})
         return Coordinates(x, y)
     }
@@ -114,19 +119,20 @@ class Asker {
      * @return StudyGroup
      */
     fun askStudyGroup(): StudyGroup{
-        println("Введите назввание группы")
+        val printer= createPrinter()
+        printer.printHint("Введите назввание группы")
         val name = readType(caster = { it }, validator = {it.isNotEmpty()})
-        println("Введите координаты")
+        printer.printHint("Введите координаты")
         val coordinates= askCoordinates()
-        println("Введите колличество студентов")
+        printer.printHint("Введите колличество студентов")
         val studentCount = readType(caster = toLongCaster, validator = {it>0})
-        println("Введите shouldBeExpelled")
+        printer.printHint("Введите shouldBeExpelled")
         val shouldBeExpeled= readType(caster = toIntCaster, validator = {it >0})
-        println("Введите среднюю оценку")
+        printer.printHint("Введите среднюю оценку")
         val averageMark = readType(caster = toIntCaster, validator = {it >0})
-        println("Введите форму обучения ${FormOfEducation.values().map { it.toString() }} или оставьте строку пустой для null")
+        printer.printHint("Введите форму обучения ${FormOfEducation.values().map { it.toString() }} или оставьте строку пустой для null")
         val formOfEducation = readType(caster = {toEnumOrNullCaster<FormOfEducation>(it)}, validator = {true})
-        println("")
+        printer.printHint("Введите поля админа")
         val person = askPerson()
         return StudyGroup(
             name,
@@ -137,5 +143,17 @@ class Asker {
             formOfEducation,
             person
         )
+    }
+    fun askCommand(): String{
+        val command= readType(caster = { it }, validator = {it.isNotEmpty()}).lowercase()
+        return command
+    }
+
+    fun askLong(): Long{
+        return readType(caster = toLongCaster, validator = {it>0})
+    }
+
+    override fun createPrinter(): Printer {
+        return Printer()
     }
 }
