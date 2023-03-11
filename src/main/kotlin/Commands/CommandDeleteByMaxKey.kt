@@ -5,9 +5,10 @@ import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 import java.util.*
 
-class CommandDeleteByMaxKey(workCollection: Collection<String, StudyGroup>): Command(), ActionsWithCollection {
+class CommandDeleteByMaxKey(workCollection: Collection<String, StudyGroup>): Command(), ActionsWithCollection, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
@@ -23,21 +24,26 @@ class CommandDeleteByMaxKey(workCollection: Collection<String, StudyGroup>): Com
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val answer= createReversedAnswer()
             //Цикл проходиться по коллекции и удаляет подходящие под условие объекты
             if (collection.collection.keys.contains(key.uppercase(Locale.getDefault()))){
-                for (i in collection.collection.keys){
+                val listOfKeys= collection.collection.keys
+                val listOfKeysForDelete= listOf<String>().toMutableList()
+                for (i in listOfKeys){
                     if (key.uppercase(Locale.getDefault()).hashCode()<i.hashCode()){
-                        executeRemove(collection,i)
+                        listOfKeysForDelete.add(i)
                     }
                 }
+                for (i in listOfKeysForDelete){
+                    executeRemove(collection, i)
+                }
             }
+            return answer
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-        return answer
     }
 
     override fun executeAdd(collection: Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
@@ -46,5 +52,13 @@ class CommandDeleteByMaxKey(workCollection: Collection<String, StudyGroup>): Com
 
     override fun executeRemove(collection: Collection<String, StudyGroup>, key: String) {
         collection.remove(key)
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Delete by max key")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 }

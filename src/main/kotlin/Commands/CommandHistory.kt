@@ -4,8 +4,9 @@ import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 
-class CommandHistory(workCollection: Collections.Collection<String, StudyGroup>) : Command() {
+class CommandHistory(workCollection: Collection<String, StudyGroup>) : Command(), WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
@@ -21,15 +22,23 @@ class CommandHistory(workCollection: Collections.Collection<String, StudyGroup>)
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val answer= createReversedAnswer()
             //Вывод массива команды, которые были вложены в массив
             answer.setterResult(key)
+            return answer
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-    return answer
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "History")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 
 }

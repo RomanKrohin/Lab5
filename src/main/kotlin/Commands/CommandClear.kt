@@ -5,8 +5,9 @@ import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 
-class CommandClear(workCollection: Collections.Collection<String, StudyGroup>) : Command(), ActionsWithCollection {
+class CommandClear(workCollection: Collection<String, StudyGroup>) : Command(), ActionsWithCollection, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
@@ -22,18 +23,19 @@ class CommandClear(workCollection: Collections.Collection<String, StudyGroup>) :
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val answer=createReversedAnswer()
             //Цикл выдергивает объекты по их ключам
             val listOfKeys= collection.collection.keys()
             for (i in listOfKeys){
                 executeRemove(collection, i)
+                collection.collection.keys.clear()
             }
+            return answer
         }
         catch (e: CommandException){
             throw e
         }
-        return answer
     }
 
     override fun executeAdd(collection: Collections.Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
@@ -42,5 +44,13 @@ class CommandClear(workCollection: Collections.Collection<String, StudyGroup>) :
 
     override fun executeRemove(collection: Collections.Collection<String, StudyGroup>, key: String) {
         collection.remove(key)
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Clear")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 }

@@ -11,5 +11,5 @@ interface ChangeLine {
      * @param path
      * @return MutableList<String>
      */
-    fun returnCommandComponents(command: String, path: String): MutableList<String>
+    fun returnCommandComponents(command: String, path: String, history: MutableList<String>): MutableList<String>
 }

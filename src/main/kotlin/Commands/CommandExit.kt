@@ -2,9 +2,10 @@ package Commands
 
 import Exceptions.CommandException
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 import kotlin.system.exitProcess
 
-class CommandExit: Command() {
+class CommandExit: Command(), WorkWithAnswer {
     /**
      * Класс команды, которая заканчивает работу приложения
      */
@@ -16,14 +17,20 @@ class CommandExit: Command() {
      *  @param key
      */
     override fun commandDo(key: String) : Answer{
-        val answer= Answer()
         try {
             exitProcess(0)
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-        return answer
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Exit")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 
 }

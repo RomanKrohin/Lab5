@@ -1,13 +1,13 @@
 package Commands
 
 import Collections.Collection
-import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.encodeToString
 
-class CommandShow(workCollection: Collections.Collection<String, StudyGroup>): Command() {
+class CommandShow(workCollection: Collections.Collection<String, StudyGroup>): Command(), WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
@@ -23,20 +23,27 @@ class CommandShow(workCollection: Collections.Collection<String, StudyGroup>): C
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val answer= createReversedAnswer()
             //Цикл проходит по коллекции
             for (i in collection.collection.values){
                 if (i!=null){
                     //Вывод объектов в текстовом формате
-                    answer.setterResult(answer.getAnswer()+Yaml.default.encodeToString(i)+"\n"+"----------")
-                    println(Yaml.default.encodeToString(i))
+                    answer.setterResult(answer.getAnswer()+Yaml.default.encodeToString(i)+"\n----------\n")
                 }
             }
+            return answer
         }
-        catch (e: CommandException){
-            throw e
+        catch (e: Exception){
+            return createAnswer()
         }
-        return answer
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Show")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 }

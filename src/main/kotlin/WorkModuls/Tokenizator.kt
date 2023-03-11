@@ -1,26 +1,20 @@
 package WorkModuls
 
-import Collections.Collection
 import Commands.ChangeLine
-import Commands.WorkWothHistory
-import StudyGroupInformation.StudyGroup
 
-class Tokenizator: ChangeLine, WorkWothHistory {
+class Tokenizator: ChangeLine {
 
     //Инициализация массива истории команд(Туда сохраняются команды)
     private val history = listOf<String>().toMutableList()
 
-    fun tokenizateCommand(collection: Collection<String, StudyGroup>, path: String): MutableList<String>{
-            val coomand = Asker().askCommand()
-            //Работа и историей (запоминаем команды)
-            workWithArrayHistory(history, coomand)
+    fun tokenizateCommand(command: String, path: String, history: MutableList<String>): MutableList<String>{
             //Нормализация компонент команды(массив в котором хранятся название команды и ее аргумент)
-            val commandComponent = returnCommandComponents(coomand, path)
-        return commandComponent
+            val commandComponent = returnCommandComponents(command, path, history)
+            return commandComponent
 
     }
 
-    override fun returnCommandComponents(command: String, path: String): MutableList<String> {
+    override fun returnCommandComponents(command: String, path: String, history: MutableList<String>): MutableList<String> {
         //Делим по пробелам и помещаем в массив
         val commandComponent1 = command.split(" ").toMutableList()
         //Создание буферного массива
@@ -52,15 +46,6 @@ class Tokenizator: ChangeLine, WorkWothHistory {
             commandComponent2.add("")
         }
         return commandComponent2
-    }
-
-    override fun workWithArrayHistory(array: MutableList<String>, coomand: String) {
-        if (array.size > 12) {
-            array.removeAt(0)
-            array.add(coomand)
-        } else {
-            array.add(coomand)
-        }
     }
 
 

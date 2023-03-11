@@ -3,15 +3,16 @@ package Commands
 import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
-import WorkModuls.Answer
-import WorkModuls.CreateCommand
+import WorkModuls.*
 import java.io.BufferedReader
 import java.io.FileReader
 import java.util.*
 
-class CommandExecuteScript(workCollection: Collection<String, StudyGroup>): Command(), ChangeLine, CreateCommand {
+class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workHistory: MutableList<String>): Command(), CreateCommand, WorkWithTokenizator, WorkWithAnswer, WorkWithPrinter {
     var collection: Collection<String, StudyGroup>
+    var history: MutableList<String>
     init {
+        history=workHistory
         collection=workCollection
     }
     /**
@@ -27,8 +28,10 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>): Comm
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val tokenizator= createTokenizator()
+            val answer= createReversedAnswer()
+            val printer= createPrinter()
             //Считывание компоненты пути к файлу
             val components= key.split(" ").toMutableList()
             //Чтение файла
@@ -38,43 +41,22 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>): Comm
             while (true){
                 if (bufferedReader.ready()){
                     coomand=bufferedReader.readLine()
-                    val command_component= returnCommandComponents(coomand, components[1])
-                    val listOfCommand= createCommnads(collection)
-                    listOfCommand.get(command_component[0])?.commandDo(components[1])
+                    val commandComponent= tokenizator.tokenizateCommand(coomand, components[1], history)
+                    val listOfCommand= createCommnads(collection, history)
+                    listOfCommand.get(commandComponent[0])?.commandDo(components[1])?.let { printer.print(it) }
                 }
                 else{
                     break
                 }
             }
+            return answer
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-        return answer
     }
 
-    //Блок нормализации строки (такой же, как и при выборке команды, но без блока команды: history и execute_script)
-    override fun returnCommandComponents(command: String, path: String): MutableList<String> {
-        val command_component1= command.split(" ").toMutableList()
-        val command_component2: MutableList<String> = listOf<String>().toMutableList()
-        for (i in command_component1){
-            if (!(i.equals(""))) command_component2.add(i)
-        }
-        if (command_component2[0].equals("save")){
-            command_component2.add(path)
-        }
-        if (command_component2.size==3){
-            command_component2[0]=command_component2[0]+" "+command_component2[1]
-            command_component2[1]=command_component2[2]
-            command_component2.removeAt(2)
-        }
-        if (command_component2.size==1){
-            command_component2.add("")
-        }
-        command_component2[1].uppercase(Locale.getDefault())
-        return command_component2
-    }
-    override fun createCommnads(collection: Collection<String, StudyGroup>): Map<String, Command> {
+    override fun createCommnads(collection: Collection<String, StudyGroup>, history: MutableList<String>): Map<String, Command> {
         return mapOf<String, Command>(
             "show" to CommandShow(collection),
             "update id" to ComandUpdateId(collection),
@@ -91,5 +73,21 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>): Comm
             "insert" to CommandInsert(collection),
             "remove" to CommandRemove(collection)
         )
+    }
+
+    override fun createTokenizator(): Tokenizator {
+        return Tokenizator()
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Execute script")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
+    }
+
+    override fun createPrinter(): Printer {
+        return Printer()
     }
 }

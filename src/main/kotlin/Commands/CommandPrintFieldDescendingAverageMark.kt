@@ -4,8 +4,9 @@ import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 
-class CommandPrintFieldDescendingAverageMark(workCollection: Collections.Collection<String, StudyGroup>): Command() {
+class CommandPrintFieldDescendingAverageMark(workCollection: Collections.Collection<String, StudyGroup>): Command(), WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
@@ -21,18 +22,26 @@ class CommandPrintFieldDescendingAverageMark(workCollection: Collections.Collect
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val answer= createReversedAnswer()
             val list: MutableList<Int> = listOf<Int>().toMutableList()
             for (i in collection.collection.values){
                 list.add(i.getAverageMark())
             }
             answer.setterResult(list.toList().sorted().reversed().toString())
+            return answer
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-        return Answer()
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "print_field_descending_average_mark")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 
 }

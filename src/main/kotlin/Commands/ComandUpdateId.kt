@@ -4,11 +4,9 @@ import Collections.ActionsWithCollection
 import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
-import WorkModuls.Answer
-import WorkModuls.Asker
-import WorkModuls.Printer
+import WorkModuls.*
 
-class ComandUpdateId(workCollection: Collections.Collection<String, StudyGroup>) : Command(), ActionsWithCollection {
+class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command(), ActionsWithCollection, WorkWithPrinter, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
 
     init {
@@ -25,25 +23,23 @@ class ComandUpdateId(workCollection: Collections.Collection<String, StudyGroup>)
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer = Answer()
         try {
+            val answer = createReversedAnswer()
+            val printer= createPrinter()
             //Метод находит объект по его ключу и если id, которые хотят установить уникален в рамках данной коллекции,
             //то он меняет id на переданный команде
-            for (i in collection.collection.keys) {
-                if (collection.collection.get(i)?.getId() == key.toLong()) {
-                    val studyGroup = collection.collection.get(i)
-                    executeRemove(collection, i)
-                    Printer().printHint("Enter new id")
+            for (i in collection.collection.values) {
+                if (i.getId() == key.toLong()) {
+                    printer.printHint("Enter new id")
                     //Ввод нового id
-                    val new_id: Long = Asker().askLong()
-                    studyGroup?.setId(new_id)
-                    executeAdd(collection, studyGroup!!, i)
+                    val newId: Long = Asker().askLong()
+                    i.setId(newId)
                 }
             }
+            return answer
         } catch (e: CommandException) {
-            throw e
+            return createAnswer()
         }
-        return answer
     }
 
     //Интерфейсы для работы с коллекцией
@@ -53,6 +49,18 @@ class ComandUpdateId(workCollection: Collections.Collection<String, StudyGroup>)
 
     override fun executeRemove(collection: Collection<String, StudyGroup>, key: String) {
         collection.remove(key)
+    }
+
+    override fun createPrinter(): Printer {
+        return Printer()
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Update id")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
     //
 }

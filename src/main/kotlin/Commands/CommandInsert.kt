@@ -6,7 +6,7 @@ import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.*
 
-class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>): Command(), ActionsWithCollection, CreateCheckModule, CreateAsker {
+class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>): Command(), ActionsWithCollection, CreateCheckModule, WorkWithAsker, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
@@ -22,8 +22,8 @@ class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>):
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val answer= createReversedAnswer()
             val asker= createAsker()
             val studyGroup= asker.askStudyGroup()
             val listOfId = mutableListOf<Long>(0)
@@ -32,19 +32,19 @@ class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>):
             }
             studyGroup.setId(listOfId.max()+1)
             executeAdd(collection, studyGroup, key)
+            return answer
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-        return answer
     }
 
     //Интерфейсы для работы с коллекцией
-    override fun executeAdd(collection: Collections.Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
+    override fun executeAdd(collection: Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
         collection.add(studyGroup, key)
     }
 
-    override fun executeRemove(collection: Collections.Collection<String, StudyGroup>, key: String) {
+    override fun executeRemove(collection: Collection<String, StudyGroup>, key: String) {
         collection.remove(key)
     }
     //
@@ -55,6 +55,14 @@ class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>):
 
     override fun createAsker(): Asker {
         return Asker()
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Insert")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 
 }

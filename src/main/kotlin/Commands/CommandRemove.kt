@@ -5,9 +5,10 @@ import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 import java.util.*
 
-class CommandRemove(workCollection: Collection<String, StudyGroup>): Command(), ActionsWithCollection {
+class CommandRemove(workCollection: Collection<String, StudyGroup>): Command(), ActionsWithCollection, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
@@ -23,14 +24,14 @@ class CommandRemove(workCollection: Collection<String, StudyGroup>): Command(), 
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            var answer=createReversedAnswer()
             executeRemove(collection, key.uppercase(Locale.getDefault()))
+            return answer
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-        return answer
     }
     //Интерфейсы для работы с коллекцией
     override fun executeAdd(collection: Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
@@ -39,6 +40,14 @@ class CommandRemove(workCollection: Collection<String, StudyGroup>): Command(), 
 
     override fun executeRemove(collection: Collection<String, StudyGroup>, key: String) {
         collection.collection.remove(key)
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Remove by key")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
     //
 }

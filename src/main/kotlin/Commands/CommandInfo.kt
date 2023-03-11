@@ -4,8 +4,9 @@ import Collections.Collection
 import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
+import WorkModuls.WorkWithAnswer
 
-class CommandInfo(workCollection: Collections.Collection<String, StudyGroup>): Command(){
+class CommandInfo(workCollection: Collection<String, StudyGroup>): Command(), WorkWithAnswer{
 
     var collection: Collection<String, StudyGroup>
     var key: String = null.toString()
@@ -23,14 +24,22 @@ class CommandInfo(workCollection: Collections.Collection<String, StudyGroup>): C
      *  @param key
      */
     override fun commandDo(key: String): Answer {
-        val answer= Answer()
         try {
+            val answer= createReversedAnswer()
             answer.setterResult("Collection: HashTable\n"+"Size "+collection.collection.size+"\n"+java.time.LocalTime.now())
+            return answer
         }
         catch (e: CommandException){
-            throw e
+            return createAnswer()
         }
-        return answer
+    }
+
+    override fun createAnswer(): Answer {
+        return Answer(nameError = "Info")
+    }
+
+    override fun createReversedAnswer(): Answer {
+        return Answer(false)
     }
 
 }
