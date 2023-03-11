@@ -15,10 +15,10 @@ class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
      * @param listOfCommand
      */
     //Инициализация массива истории команд(Туда сохраняются команды)
-    val history = listOf<String>().toMutableList()
+    private val history = listOf<String>().toMutableList()
 
     //Инициализация map в котором храняться экземпляры команды (ключами выступают их названия)
-    val listOfCommand = createCommnads()
+    private val listOfCommand = createCommnads()
 
     //Метод выборки команды
     /**
@@ -31,9 +31,9 @@ class ChooseCommand : CreateCommand, ChangeLine, WorkWothHistory {
         while (true) {
             try {
                 val coomand = readln().lowercase(Locale.getDefault())
-                //Работа и истоией (запоминаем команды)
+                //Работа и историей (запоминаем команды)
                 workWithArrayHistory(history, coomand)
-                //Нормализация компонент команды(массив в котором храняться название команды и ее аргумент)
+                //Нормализация компонент команды(массив в котором хранятся название команды и ее аргумент)
                 val commandComponent = returnCommandComponents(coomand, path)
                 //Вызов метода работы команды
                 listOfCommand.get(commandComponent[0])?.commandDo(collection, commandComponent[1])

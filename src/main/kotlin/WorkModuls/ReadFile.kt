@@ -14,7 +14,7 @@ open class ReadFile(pathFile: String): StartChooseCommand, CreateCheckModule, Ac
      * Класс модуля чтения файла
      * @param path
      */
-    var path: String = ""
+    private var path: String = ""
 
     //Экспорт пути файла, передаваемого через аргумент команды
     init {

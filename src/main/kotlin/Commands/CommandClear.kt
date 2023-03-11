@@ -18,9 +18,9 @@ class CommandClear : Command(), ActionsWithCollection {
     override fun commandDo(collection: Collections.Collection<String, StudyGroup>, key: String) {
         try {
             //Цикл выдергивает объекты по их ключам
-            for (i in collection.collection.keys){
+            val listOfKeys= collection.collection.keys()
+            for (i in listOfKeys){
                 executeRemove(collection, i)
-                collection.collection.keys.remove(i)
             }
         }
         catch (e: CommandException){

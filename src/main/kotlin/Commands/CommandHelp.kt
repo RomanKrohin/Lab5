@@ -27,7 +27,6 @@ class CommandHelp: Command() {
                 "replace_if_greater {key} : заменить значение по ключу, если новое значение больше старого\n" +
                 "remove_greater_key {key} : удалить из коллекции все элементы, ключ которых превышает заданный\n" +
                 "average_of_students_count : вывести среднее значение поля studentsCount для всех элементов коллекции\n" +
-                "print_descending : вывести элементы коллекции в порядке убывания\n" +
                 "print_field_descending_should_be_expelled : вывести значения поля shouldBeExpelled всех элементов в порядке убывания")
     }
 
