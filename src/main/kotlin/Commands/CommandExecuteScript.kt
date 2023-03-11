@@ -8,13 +8,14 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.util.*
 
-class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workHistory: MutableList<String>): Command(), CreateCommand, WorkWithTokenizator, WorkWithAnswer, WorkWithPrinter {
+class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workHistory: MutableList<String>): Command(), CreateCommand, WorkWithTokenizator, WorkWithAnswer, WorkWithPrinter, WorkWothHistory {
     var collection: Collection<String, StudyGroup>
     var history: MutableList<String>
     init {
         history=workHistory
         collection=workCollection
     }
+    val listOfCommand= createCommnads(collection, history)
     /**
      * Класс команды, которая читает файл и выполняет команды, написанные в нем
      */
@@ -42,7 +43,7 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workH
                 if (bufferedReader.ready()){
                     coomand=bufferedReader.readLine()
                     val commandComponent= tokenizator.tokenizateCommand(coomand, components[1], history)
-                    val listOfCommand= createCommnads(collection, history)
+                    workWithArrayHistory(history, coomand)
                     listOfCommand.get(commandComponent[0])?.commandDo(components[1])?.let { printer.print(it) }
                 }
                 else{
@@ -71,7 +72,8 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workH
             "remove_lower_key" to CommandDeleteByMinKey(collection),
             "count_less_than_group_admin" to CommandCountLessThanAdmin(collection),
             "insert" to CommandInsert(collection),
-            "remove" to CommandRemove(collection)
+            "remove" to CommandRemove(collection),
+            "history" to CommandHistory(collection)
         )
     }
 
@@ -89,5 +91,14 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workH
 
     override fun createPrinter(): Printer {
         return Printer()
+    }
+
+    override fun workWithArrayHistory(array: MutableList<String>, coomand: String) {
+        if (array.size > 12) {
+            array.removeAt(0)
+            array.add(coomand)
+        } else {
+            array.add(coomand)
+        }
     }
 }
