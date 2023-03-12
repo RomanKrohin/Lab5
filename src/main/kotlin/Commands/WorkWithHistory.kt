@@ -1,10 +1,10 @@
 package Commands
 
-interface WorkWothHistory {
+/**
+ * Интерфейс для работы с коллекцией
+ */
+interface WorkWithHistory {
 
-    /**
-     * Интерфейс для работы с коллекцией
-     */
 
     /**
      * Метод работы коллекции

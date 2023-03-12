@@ -6,16 +6,16 @@ import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.*
 
-class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>): Command(), ActionsWithCollection, CreateCheckModule, WorkWithAsker, WorkWithAnswer {
+/**
+ * Класс команды, которая добавляет объект по его ключу
+ */
+class CommandInsert(workCollection: Collection<String, StudyGroup>): Command(), ActionsWithCollection, CreateCheckModule, WorkWithAsker, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
     }
-    /**
-     * Класс команды, которая добавляет объект по его ключу
-     */
 
-    //Команда добавляет в коллекцию объект с заданным ключем
+
     /**
      *  Метод работы команды
      *  @param collection
@@ -39,7 +39,6 @@ class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>):
         }
     }
 
-    //Интерфейсы для работы с коллекцией
     override fun executeAdd(collection: Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
         collection.add(studyGroup, key)
     }
@@ -47,8 +46,7 @@ class CommandInsert(workCollection: Collections.Collection<String, StudyGroup>):
     override fun executeRemove(collection: Collection<String, StudyGroup>, key: String) {
         collection.remove(key)
     }
-    //
-    //Интерфейс создания проверочного модуля
+
     override fun createModule(): CheckModule {
         return CheckModule()
     }

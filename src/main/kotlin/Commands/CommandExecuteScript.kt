@@ -8,21 +8,28 @@ import java.io.BufferedReader
 import java.io.FileReader
 import java.util.*
 
-class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workHistory: MutableList<String>): Command(), CreateCommand, WorkWithTokenizator, WorkWithAnswer, WorkWithPrinter, WorkWothHistory {
+/**
+ * Класс команды, которая читает файл и выполняет команды, написанные в нем
+ */
+class CommandExecuteScript(
+    workCollection: Collection<String, StudyGroup>,
+    workHistory: MutableList<String>,
+    pathsForExecuteScripts: MutableList<String>,
+    pathOfFile: String,
+) : Command(), CreateCommand, WorkWithTokenizator, WorkWithAnswer, WorkWithPrinter, WorkWithHistory,
+    WorkWithCommandExceptionAnswer {
     var collection: Collection<String, StudyGroup>
     var history: MutableList<String>
-    init {
-        history=workHistory
-        collection=workCollection
-    }
-    val listOfCommand= createCommnads(collection, history)
-    /**
-     * Класс команды, которая читает файл и выполняет команды, написанные в нем
-     */
-    //Команда читает файл и выполняет команды, написанные в нем
+    val path = pathOfFile
 
-    //Коллекция в которой сохранены все экземпляры команд
-    //Метод работы команды
+    init {
+        history = workHistory
+        collection = workCollection
+    }
+
+    var listOfCommand = createCommnads(collection, history, pathsForExecuteScripts, pathOfFile)
+    val listOfPaths = pathsForExecuteScripts
+
     /**
      *  Метод работы команды
      *  @param collection
@@ -30,34 +37,44 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workH
      */
     override fun commandDo(key: String): Answer {
         try {
-            val tokenizator= createTokenizator()
-            val answer= createReversedAnswer()
-            val printer= createPrinter()
-            //Считывание компоненты пути к файлу
-            val components= key.split(" ").toMutableList()
-            //Чтение файла
-            val bufferedReader= BufferedReader(FileReader(components.get(0)))
-            var coomand = ""
-            //Цикл считывает строки из файла и нормализует их, производит выборку и реализует метод работы команды
-            while (true){
-                if (bufferedReader.ready()){
-                    coomand=bufferedReader.readLine()
-                    val commandComponent= tokenizator.tokenizateCommand(coomand, components[1], history)
-                    workWithArrayHistory(history, coomand)
-                    listOfCommand.get(commandComponent[0])?.commandDo(components[1])?.let { printer.print(it) }
-                }
-                else{
+            val tokenizator = createTokenizator()
+            val printer = createPrinter()
+            val bufferedReader = BufferedReader(FileReader(key))
+            while (true) {
+                if (bufferedReader.ready()) {
+                    val commandComponent = tokenizator.tokenizateCommand(bufferedReader.readLine(), path, history)
+                    if (commandComponent[0] != "execute_script") {
+                        if (listOfCommand.keys.contains(commandComponent[0])) {
+                            listOfCommand.get(commandComponent[0])
+                                ?.let { printer.print(it.commandDo(commandComponent[1])) }
+                        } else {
+                            printer.printHint("Некорректные команда: ${commandComponent[0]}")
+                        }
+                    } else {
+                        if (!(listOfPaths.contains(commandComponent[1]))) {
+                            listOfPaths.add(commandComponent[1])
+                            val workCommand = CommandExecuteScript(collection, history, listOfPaths, path)
+                            printer.print(workCommand.commandDo(commandComponent[1]))
+                        } else {
+                            printer.printHint("Данный файл уже был использован: " + commandComponent[1])
+                        }
+                    }
+                } else {
                     break
                 }
             }
-            return answer
-        }
-        catch (e: CommandException){
+            return createReversedAnswer()
+        } catch (e: CommandException) {
             return createAnswer()
         }
     }
 
-    override fun createCommnads(collection: Collection<String, StudyGroup>, history: MutableList<String>): Map<String, Command> {
+    override fun createCommnads(
+        collection: Collection<String, StudyGroup>,
+        history: MutableList<String>,
+        pathsForExecuteScripts: MutableList<String>,
+        pathOfFile: String,
+    ): Map<String, Command> {
         return mapOf<String, Command>(
             "show" to CommandShow(collection),
             "update id" to ComandUpdateId(collection),
@@ -100,5 +117,11 @@ class CommandExecuteScript(workCollection: Collection<String, StudyGroup>, workH
         } else {
             array.add(coomand)
         }
+    }
+
+    override fun createCommandExceptionAnswer(nameCommand: String): Answer {
+        val answer = createAnswer()
+        answer.nameError += ": " + nameCommand
+        return answer
     }
 }

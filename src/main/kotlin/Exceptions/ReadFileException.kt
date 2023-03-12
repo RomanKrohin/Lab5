@@ -1,10 +1,10 @@
 package Exceptions
 
-class ReadFileException: Exception() {
+class ReadFileException : Exception() {
     /**
      * Исключение чтения файла
      */
-    fun ReadFileException(){
+    fun ReadFileException() {
         println("ReadFileException")
     }
 }

@@ -1,17 +1,18 @@
 package WorkModuls
 
 import Collections.Collection
-import Commands.WorkWothHistory
+import Commands.WorkWithHistory
 import StudyGroupInformation.StudyGroup
 
-class Reader: WorkWithAsker, WorkWithPrinter, WorkWithTokenizator, WorkWithChooseCommand, WorkWothHistory {
+class Reader : WorkWithAsker, WorkWithPrinter, WorkWithTokenizator, WorkWithChooseCommand, WorkWithHistory {
 
     private val history = listOf<String>().toMutableList()
-    fun reader(collection: Collection<String, StudyGroup>, path: String){
-        val asker= createAsker()
-        val tokens= createTokenizator()
-        val chooseCommand= createChooseCommand(collection, history)
-        val printer= createPrinter()
+    private val pathsForExecuteScripts = listOf<String>().toMutableList()
+    fun reader(collection: Collection<String, StudyGroup>, path: String) {
+        val asker = createAsker()
+        val tokens = createTokenizator()
+        val chooseCommand = createChooseCommand(collection, history, pathsForExecuteScripts, path)
+        val printer = createPrinter()
         while (true) {
             val command = asker.askCommand()
             workWithArrayHistory(history, command)
@@ -33,8 +34,13 @@ class Reader: WorkWithAsker, WorkWithPrinter, WorkWithTokenizator, WorkWithChoos
         return Tokenizator()
     }
 
-    override fun createChooseCommand(collection: Collection<String, StudyGroup>,history: MutableList<String>): ChooseCommand {
-        return ChooseCommand(collection, history)
+    override fun createChooseCommand(
+        collection: Collection<String, StudyGroup>,
+        history: MutableList<String>,
+        pathsForExecuteScripts: MutableList<String>,
+        pathOfFile: String,
+    ): ChooseCommand {
+        return ChooseCommand(collection, history, pathsForExecuteScripts, pathOfFile)
     }
 
     override fun workWithArrayHistory(array: MutableList<String>, coomand: String) {

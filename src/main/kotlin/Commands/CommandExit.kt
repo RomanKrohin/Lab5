@@ -5,22 +5,19 @@ import WorkModuls.Answer
 import WorkModuls.WorkWithAnswer
 import kotlin.system.exitProcess
 
-class CommandExit: Command(), WorkWithAnswer {
-    /**
-     * Класс команды, которая заканчивает работу приложения
-     */
-
-    //Команды заканчивает работу приложения
+/**
+ * Класс команды, которая заканчивает работу приложения
+ */
+class CommandExit : Command(), WorkWithAnswer {
     /**
      *  Метод работы команды
      *  @param collection
      *  @param key
      */
-    override fun commandDo(key: String) : Answer{
+    override fun commandDo(key: String): Answer {
         try {
             exitProcess(0)
-        }
-        catch (e: CommandException){
+        } catch (e: CommandException) {
             return createAnswer()
         }
     }

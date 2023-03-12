@@ -6,16 +6,16 @@ import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
 import WorkModuls.WorkWithAnswer
 
+/**
+ * Класс команды, который выводит последние 12 введенных команд
+ */
 class CommandHistory(workCollection: Collection<String, StudyGroup>) : Command(), WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
-    init {
-        collection=workCollection
-    }
-    /**
-     * Класс команды, который выводит последние 12 введенных команд
-     */
 
-    //Команда, которая выводит последние 12 команд
+    init {
+        collection = workCollection
+    }
+
     /**
      *  Метод работы команды
      *  @param collection
@@ -23,12 +23,10 @@ class CommandHistory(workCollection: Collection<String, StudyGroup>) : Command()
      */
     override fun commandDo(key: String): Answer {
         try {
-            val answer= createReversedAnswer()
-            //Вывод массива команды, которые были вложены в массив
+            val answer = createReversedAnswer()
             answer.setterResult(key)
             return answer
-        }
-        catch (e: CommandException){
+        } catch (e: CommandException) {
             return createAnswer()
         }
     }

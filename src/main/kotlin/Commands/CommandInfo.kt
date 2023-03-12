@@ -6,18 +6,19 @@ import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
 import WorkModuls.WorkWithAnswer
 
-class CommandInfo(workCollection: Collection<String, StudyGroup>): Command(), WorkWithAnswer{
+/**
+ * Класс команды, которая выводит информацию о коллекции
+ */
+class CommandInfo(workCollection: Collection<String, StudyGroup>) : Command(), WorkWithAnswer {
 
     var collection: Collection<String, StudyGroup>
     var key: String = null.toString()
+
     init {
-        collection=workCollection
+        collection = workCollection
 
     }
-    /**
-     * Класс команды, которая выводит информацию о коллекции
-     */
-    //Команда выводит информацию и коллекции
+
     /**
      *  Метод работы команды
      *  @param collection
@@ -25,11 +26,10 @@ class CommandInfo(workCollection: Collection<String, StudyGroup>): Command(), Wo
      */
     override fun commandDo(key: String): Answer {
         try {
-            val answer= createReversedAnswer()
-            answer.setterResult("Collection: HashTable\n"+"Size "+collection.collection.size+"\n"+java.time.LocalTime.now())
+            val answer = createReversedAnswer()
+            answer.setterResult("Collection: HashTable\n" + "Size " + collection.collection.size + "\n" + java.time.LocalTime.now())
             return answer
-        }
-        catch (e: CommandException){
+        } catch (e: CommandException) {
             return createAnswer()
         }
     }

@@ -2,19 +2,23 @@ package WorkModuls
 
 import Commands.ChangeLine
 
-class Tokenizator: ChangeLine {
+class Tokenizator : ChangeLine {
 
     //Инициализация массива истории команд(Туда сохраняются команды)
     private val history = listOf<String>().toMutableList()
 
-    fun tokenizateCommand(command: String, path: String, history: MutableList<String>): MutableList<String>{
-            //Нормализация компонент команды(массив в котором хранятся название команды и ее аргумент)
-            val commandComponent = returnCommandComponents(command, path, history)
-            return commandComponent
+    fun tokenizateCommand(command: String, path: String, history: MutableList<String>): MutableList<String> {
+        //Нормализация компонент команды(массив в котором хранятся название команды и ее аргумент)
+        val commandComponent = returnCommandComponents(command, path, history)
+        return commandComponent
 
     }
 
-    override fun returnCommandComponents(command: String, path: String, history: MutableList<String>): MutableList<String> {
+    override fun returnCommandComponents(
+        command: String,
+        path: String,
+        history: MutableList<String>,
+    ): MutableList<String> {
         //Делим по пробелам и помещаем в массив
         val commandComponent1 = command.split(" ").toMutableList()
         //Создание буферного массива
@@ -30,10 +34,6 @@ class Tokenizator: ChangeLine {
         //Добавление компоненты для работы команды save
         if (commandComponent2[0].equals("save")) {
             commandComponent2.add(path)
-        }
-        //Добавление компоненты для работы команды execute_script
-        if (commandComponent2[0].equals("execute_script")) {
-            commandComponent2[1] = commandComponent2[1] + " " + path
         }
         //Исправление команды состоящих из двух слов
         if (commandComponent2.size == 3) {

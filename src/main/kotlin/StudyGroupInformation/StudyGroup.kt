@@ -11,7 +11,7 @@ data class StudyGroup(
     private val shouldBeExpelled: Int,
     private val averageMark: Int,
     private val formOfEducation: FormOfEducation? = null,
-    private val groupAdmin: Person
+    private val groupAdmin: Person,
 ) {
 
     private val localDateTime: LocalDateTime by lazy { java.time.LocalDateTime.now() }

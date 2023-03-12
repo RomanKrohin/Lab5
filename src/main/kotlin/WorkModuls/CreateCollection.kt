@@ -12,5 +12,5 @@ interface CreateCollection {
      * Меетод создания коллекции
      * @return Collection
      */
-    public fun createCollection(): Collection<String, StudyGroup>
+    fun createCollection(): Collection<String, StudyGroup>
 }

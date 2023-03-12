@@ -2,11 +2,11 @@ package Collections
 
 import StudyGroupInformation.StudyGroup
 
+/**
+ * Интерфейс инициализации действий с коллекцией
+ * @property Collection
+ */
 interface ActionsWithCollection {
-    /**
-     * Интерфейс инициализации действий с коллекцией
-     * @property Collection
-     */
 
     /**
      * Метод инициализации добавления элемента

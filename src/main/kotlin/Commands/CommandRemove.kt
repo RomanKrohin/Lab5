@@ -8,16 +8,17 @@ import WorkModuls.Answer
 import WorkModuls.WorkWithAnswer
 import java.util.*
 
-class CommandRemove(workCollection: Collection<String, StudyGroup>): Command(), ActionsWithCollection, WorkWithAnswer {
-    var collection: Collection<String, StudyGroup>
-    init {
-        collection=workCollection
-    }
-    /**
-     * Класс команды, которая удаляет объект из коллекции по его ключу
-     */
+/**
+ * Класс команды, которая удаляет объект из коллекции по его ключу
+ */
 
-    //Команда удаляет объект из коллекции по его ключу
+class CommandRemove(workCollection: Collection<String, StudyGroup>) : Command(), ActionsWithCollection, WorkWithAnswer {
+    var collection: Collection<String, StudyGroup>
+
+    init {
+        collection = workCollection
+    }
+
     /**
      *  Метод работы команды
      *  @param collection
@@ -25,15 +26,14 @@ class CommandRemove(workCollection: Collection<String, StudyGroup>): Command(), 
      */
     override fun commandDo(key: String): Answer {
         try {
-            var answer=createReversedAnswer()
+            var answer = createReversedAnswer()
             executeRemove(collection, key.uppercase(Locale.getDefault()))
             return answer
-        }
-        catch (e: CommandException){
+        } catch (e: CommandException) {
             return createAnswer()
         }
     }
-    //Интерфейсы для работы с коллекцией
+
     override fun executeAdd(collection: Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
         collection.collection.put(key, studyGroup)
     }
@@ -49,5 +49,4 @@ class CommandRemove(workCollection: Collection<String, StudyGroup>): Command(), 
     override fun createReversedAnswer(): Answer {
         return Answer(false)
     }
-    //
 }

@@ -1,4 +1,3 @@
-
 import Collections.Collection
 import Exceptions.FilePathException
 import StudyGroupInformation.StudyGroup
@@ -10,17 +9,17 @@ import WorkModuls.ReadFile
  * Точка вхождения в программу
  * @param args
  */
-fun main(args: Array<String>){
+fun main(args: Array<String>) {
     // Начало работы, создает экземпляр инициатора работы, использование метода,
     // который начинает чтение фала
     try {
         val executer: Executer = Executer(args[0])
-    }
-    catch (e: FilePathException){
+    } catch (e: FilePathException) {
         throw e
     }
 
 }
+
 class Executer(path: String) : ExecuteActionsWithRead, CreateCollection {
     /**
      * Класс инициализатор работы
@@ -28,7 +27,7 @@ class Executer(path: String) : ExecuteActionsWithRead, CreateCollection {
      */
     //Метод инициализации передачи пути к файлу и начала работы чтения файла
     init {
-        val test=createReader(path)
+        val test = createReader(path)
         executeRead(test, createCollection())
     }
 
@@ -43,7 +42,7 @@ class Executer(path: String) : ExecuteActionsWithRead, CreateCollection {
     }
 
     //Создание экземпляра коллекции
-    override fun createCollection(): Collection <String, StudyGroup>{
+    override fun createCollection(): Collection<String, StudyGroup> {
         return Collection()
     }
 

@@ -6,13 +6,13 @@ import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.*
 
-class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command(), ActionsWithCollection, WorkWithPrinter, WorkWithAnswer {
+class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command(), ActionsWithCollection,
+    WorkWithPrinter, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
 
     init {
         collection = workCollection
     }
-    //Команда обновления id у объекта
     /**
      * Класс команды, которая обновляет id объекта коллекции по его ключу
      */
@@ -25,13 +25,10 @@ class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command()
     override fun commandDo(key: String): Answer {
         try {
             val answer = createReversedAnswer()
-            val printer= createPrinter()
-            //Метод находит объект по его ключу и если id, которые хотят установить уникален в рамках данной коллекции,
-            //то он меняет id на переданный команде
+            val printer = createPrinter()
             for (i in collection.collection.values) {
                 if (i.getId() == key.toLong()) {
                     printer.printHint("Enter new id")
-                    //Ввод нового id
                     val newId: Long = Asker().askLong()
                     i.setId(newId)
                 }
@@ -42,7 +39,6 @@ class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command()
         }
     }
 
-    //Интерфейсы для работы с коллекцией
     override fun executeAdd(collection: Collection<String, StudyGroup>, studyGroup: StudyGroup, key: String) {
         collection.add(studyGroup, key)
     }
@@ -62,5 +58,4 @@ class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command()
     override fun createReversedAnswer(): Answer {
         return Answer(false)
     }
-    //
 }

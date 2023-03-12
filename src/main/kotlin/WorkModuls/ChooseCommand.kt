@@ -3,39 +3,40 @@ package WorkModuls
 import Collections.Collection
 import Commands.*
 import StudyGroupInformation.StudyGroup
-import java.util.*
 
-class ChooseCommand(collection: Collection<String, StudyGroup>, history: MutableList<String>) : CreateCommand, WorkWithAnswer {
-    val listOfCommand= createCommnads(collection, history)
+class ChooseCommand(
+    collection: Collection<String, StudyGroup>,
+    history: MutableList<String>,
+    pathsForExecuteScripts: MutableList<String>,
+    pathOfFile: String,
+) : CreateCommand, WorkWithAnswer, WorkWithCommandExceptionAnswer {
+    val listOfPaths = pathsForExecuteScripts
+    var listOfCommand = createCommnads(collection, history, listOfPaths, pathOfFile)
+    val workHistory = history
+    val workCollection = collection
+    val workPath = pathOfFile
 
-    /**
-     * Класс выборки команды, здесь команды обрабатываются и выбирается
-     * подходящие
-     * @param history
-     * @param listOfCommand
-     */
-    //Инициализация массива истории команд(Туда сохраняются команды)
 
-    //Инициализация map в котором храняться экземпляры команды (ключами выступают их названия)
-
-    //Метод выборки команды
-    /**
-     * Метод выборки команды
-     * @param collection
-     * @param path
-     */
     fun chooseCoomand(commandComponent: MutableList<String>): Answer {
-        //Чтение команды из потока ввода будет происходить до команды exit
-                //Вызов метода работы команды4
-                val command = listOfCommand[commandComponent[0]]?.let {
-                    val answer=it.commandDo(commandComponent[1])
-                    return answer
-                }
-        return createAnswer()
+        commandComponent[0].lowercase()
+        if (commandComponent[0] == "execute_script") {
+            listOfPaths.add(commandComponent[1])
+            listOfCommand = createCommnads(workCollection, workHistory, listOfPaths, workPath)
+        }
+        val command = listOfCommand[commandComponent[0]]?.let {
+            val answer = it.commandDo(commandComponent[1])
+            return answer
+        }
+        return createCommandExceptionAnswer(commandComponent[0])
     }
 
 
-    override fun createCommnads(collection: Collection<String, StudyGroup>, history: MutableList<String>): Map<String, Command> {
+    override fun createCommnads(
+        collection: Collection<String, StudyGroup>,
+        history: MutableList<String>,
+        pathsForExecuteScripts: MutableList<String>,
+        pathOfFile: String,
+    ): Map<String, Command> {
         return mapOf<String, Command>(
             "show" to CommandShow(collection),
             "update id" to ComandUpdateId(collection),
@@ -52,7 +53,7 @@ class ChooseCommand(collection: Collection<String, StudyGroup>, history: Mutable
             "count_less_than_group_admin" to CommandCountLessThanAdmin(collection),
             "insert" to CommandInsert(collection),
             "remove" to CommandRemove(collection),
-            "execute_script" to CommandExecuteScript(collection, history)
+            "execute_script" to CommandExecuteScript(collection, history, pathsForExecuteScripts, pathOfFile)
         )
     }
 
@@ -62,5 +63,11 @@ class ChooseCommand(collection: Collection<String, StudyGroup>, history: Mutable
 
     override fun createReversedAnswer(): Answer {
         return Answer(false)
+    }
+
+    override fun createCommandExceptionAnswer(nameCommand: String): Answer {
+        val answer = createAnswer()
+        answer.nameError += ": " + nameCommand
+        return answer
     }
 }

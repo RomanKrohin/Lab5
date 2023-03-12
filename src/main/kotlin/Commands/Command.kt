@@ -2,11 +2,11 @@ package Commands
 
 import WorkModuls.Answer
 
+/**
+ * Класс-родитель команд
+ */
 abstract class Command() {
-    /**
-     * Класс-родитель команд
-     */
-    //Абстрактный класс от которого наследуются все другие команды
+
     /**
      *  Метод работы команды
      *  @param collection

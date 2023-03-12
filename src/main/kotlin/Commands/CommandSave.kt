@@ -10,15 +10,15 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.io.Writer
 
+/**
+ * Класс команды, которая очищает файл и пишет, переводит объекты, сохраненные в коллекции, в строчный формат и записывает их в файл
+ */
 class CommandSave(workCollection: Collections.Collection<String, StudyGroup>): Command(), WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
     init {
         collection=workCollection
     }
-    /**
-     * Класс команды, которая очищает файл и пишет, переводит объекты, сохраненные в коллекции, в строчный формат и записывает их в файл
-     */
-    //Команда очищает файл и пишет, переводит объекты, сохраненные в коллекции, в строчный формат и записывает их в файл
+
     /**
      *  Метод работы команды
      *  @param collection
@@ -27,10 +27,8 @@ class CommandSave(workCollection: Collections.Collection<String, StudyGroup>): C
     override fun commandDo(key: String): Answer {
         try {
             val answer= createReversedAnswer()
-            //Экспорт пути к файлу
             val outputStream = FileOutputStream(key)
             val writer: Writer = OutputStreamWriter(outputStream)
-            //Перевод в текстовый формат
             writer.write(Yaml.default.encodeToString(collection.collection.toMap()))
             writer.close()
             return answer

@@ -1,11 +1,11 @@
 package Exceptions
 
-class CommandException: Exception(){
+class CommandException : Exception() {
 
     /**
      * Исключение команды
      */
-    fun CommandException(){
+    fun CommandException() {
         println("Command Exception")
     }
 }

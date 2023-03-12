@@ -1,10 +1,10 @@
 package Exceptions
 
-class FilePathException: Exception() {
+class FilePathException : Exception() {
     /**
      * Исключение пути к файлу
      */
-    fun FilePathException(){
+    fun FilePathException() {
         println("Path of file is wrong")
     }
 }

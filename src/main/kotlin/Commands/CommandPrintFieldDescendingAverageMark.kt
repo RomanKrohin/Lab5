@@ -6,16 +6,17 @@ import StudyGroupInformation.StudyGroup
 import WorkModuls.Answer
 import WorkModuls.WorkWithAnswer
 
-class CommandPrintFieldDescendingAverageMark(workCollection: Collections.Collection<String, StudyGroup>): Command(), WorkWithAnswer {
+/**
+ * Класс команды, которая выводит в порядке убывания значение поля average mark всех объектов
+ */
+class CommandPrintFieldDescendingAverageMark(workCollection: Collections.Collection<String, StudyGroup>) : Command(),
+    WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
-    init {
-        collection=workCollection
-    }
-    /**
-     * Класс команды, которая выводит в порядке убывания значение поля average mark всех объектов
-     */
 
-    //Команда выводит в порядке убывания значение поля average mark всех объектов
+    init {
+        collection = workCollection
+    }
+
     /**
      *  Метод работы команды
      *  @param collection
@@ -23,15 +24,14 @@ class CommandPrintFieldDescendingAverageMark(workCollection: Collections.Collect
      */
     override fun commandDo(key: String): Answer {
         try {
-            val answer= createReversedAnswer()
+            val answer = createReversedAnswer()
             val list: MutableList<Int> = listOf<Int>().toMutableList()
-            for (i in collection.collection.values){
+            for (i in collection.collection.values) {
                 list.add(i.getAverageMark())
             }
             answer.setterResult(list.toList().sorted().reversed().toString())
             return answer
-        }
-        catch (e: CommandException){
+        } catch (e: CommandException) {
             return createAnswer()
         }
     }
