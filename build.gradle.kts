@@ -14,19 +14,17 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-    testImplementation("io.kotest:kotest-runner-junit5:4.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1")
-    implementation("com.charleskorn.kaml:kaml:0.35.3")
-    implementation("org.yaml:snakeyaml:1.8")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.5.0")
+    implementation("com.charleskorn.kaml:kaml:0.52.0")
+    implementation("org.yaml:snakeyaml:2.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 
 kotlin {
-    jvmToolchain(8)
+    jvmToolchain(17)
 }
 
 application {
@@ -39,13 +37,14 @@ tasks.named<JavaExec>("run"){
 
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "17"
 }
-
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     archiveFileName.set("/home/roman/App/App.jar")
 }
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 
 
 

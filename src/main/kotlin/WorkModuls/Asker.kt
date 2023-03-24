@@ -25,8 +25,8 @@ class Asker : WorkWithPrinter {
     fun <T> readType(caster: TypeCaster<T>, validator: Predicate<T>): T {
         var output: T
         while (true) {
-            val userInput = readln()
             try {
+                val userInput = readln()
                 output = caster(userInput)
             } catch (e: Exception) {
                 when (e) {
@@ -156,6 +156,7 @@ class Asker : WorkWithPrinter {
      * @return String
      */
     fun askCommand(): String {
+
         val command = readType(caster = { it }, validator = { it.isNotEmpty() })
         return command
     }

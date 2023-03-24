@@ -15,7 +15,7 @@ class ChooseCommand(
     collection: Collection<String, StudyGroup>,
     history: MutableList<String>,
     pathsForExecuteScripts: MutableList<String>,
-    pathOfFile: String,
+    pathOfFile: String
 ) : CreateCommand, WorkWithAnswer, WorkWithCommandExceptionAnswer {
     val listOfPaths = pathsForExecuteScripts
     var listOfCommand = createCommnads(collection, history, listOfPaths, pathOfFile)

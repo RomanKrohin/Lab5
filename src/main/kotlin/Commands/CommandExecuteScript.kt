@@ -40,7 +40,7 @@ class CommandExecuteScript(
         try {
             val tokenizator = createTokenizator()
             val printer = createPrinter()
-            if(!File(key).isHidden){
+            if(!File(key).isFile){
                 return createAnswer();
             }
             val bufferedReader = BufferedReader(FileReader(key))
