@@ -4,6 +4,13 @@ import Collections.Collection
 import Commands.*
 import StudyGroupInformation.StudyGroup
 
+/**
+ * Класс управления командами
+ * @param collection
+ * @param history
+ * @param pathsForExecuteScripts
+ * @param pathOfFile
+ */
 class ChooseCommand(
     collection: Collection<String, StudyGroup>,
     history: MutableList<String>,
@@ -16,7 +23,13 @@ class ChooseCommand(
     val workCollection = collection
     val workPath = pathOfFile
 
-
+    /**
+     * Метод выборки команд
+     * @param collection
+     * @param history
+     * @param pathsForExecuteScripts
+     * @param pathOfFile
+     */
     fun chooseCoomand(commandComponent: MutableList<String>): Answer {
         commandComponent[0].lowercase()
         if (commandComponent[0] == "execute_script") {
@@ -29,7 +42,6 @@ class ChooseCommand(
         }
         return createCommandExceptionAnswer(commandComponent[0])
     }
-
 
     override fun createCommnads(
         collection: Collection<String, StudyGroup>,

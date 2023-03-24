@@ -5,6 +5,7 @@ import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.*
 import java.io.BufferedReader
+import java.io.File
 import java.io.FileReader
 import java.util.*
 
@@ -39,6 +40,9 @@ class CommandExecuteScript(
         try {
             val tokenizator = createTokenizator()
             val printer = createPrinter()
+            if(!File(key).isHidden){
+                return createAnswer();
+            }
             val bufferedReader = BufferedReader(FileReader(key))
             while (true) {
                 if (bufferedReader.ready()) {

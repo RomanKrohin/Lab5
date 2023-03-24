@@ -6,13 +6,13 @@ import java.util.function.Predicate
 
 typealias  TypeCaster<T> = (userInput: String) -> T
 
+/**
+ * Класс для работы команды insert. Пошагово вводит поля, запрпашивая от пользователя
+ * введение правильных данных при их ошибочном введении
+ * @param toIntCaster перевод к типу Int
+ * @param toLongCaster перевод к типу Long
+ */
 class Asker : WorkWithPrinter {
-    /**
-     * Класс для работы команды insert. Пошагово вводит поля, запрпашивая от пользователя
-     * введение правильных данных при их ошибочном введении
-     * @param toIntCaster перевод к типу Int
-     * @param toLongCaster перевод к типу Long
-     */
 
     /**
      * Метод чтения данных, введенных пользователем и попытке привести их
@@ -151,11 +151,19 @@ class Asker : WorkWithPrinter {
         )
     }
 
+    /**
+     * Метод запроса команд
+     * @return String
+     */
     fun askCommand(): String {
         val command = readType(caster = { it }, validator = { it.isNotEmpty() })
         return command
     }
 
+    /**
+     * Метод запроса числа типа Long
+     * @return Long
+     */
     fun askLong(): Long {
         return readType(caster = toLongCaster, validator = { it > 0 })
     }

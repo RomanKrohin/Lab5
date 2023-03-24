@@ -6,6 +6,9 @@ import Exceptions.CommandException
 import StudyGroupInformation.StudyGroup
 import WorkModuls.*
 
+/**
+ * Класс команды, которая обновляет id объекта коллекции по его ключу
+ */
 class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command(), ActionsWithCollection,
     WorkWithPrinter, WorkWithAnswer {
     var collection: Collection<String, StudyGroup>
@@ -13,9 +16,6 @@ class ComandUpdateId(workCollection: Collection<String, StudyGroup>) : Command()
     init {
         collection = workCollection
     }
-    /**
-     * Класс команды, которая обновляет id объекта коллекции по его ключу
-     */
 
     /**
      *  Метод работы команды

@@ -3,11 +3,11 @@ package WorkModuls
 import Commands.Command
 import StudyGroupInformation.StudyGroup
 
-interface CreateCommand {
-    /**
-     * Интерфейс для создания массива с командыми
-     */
+/**
+ * Интерфейс для создания массива с командами
+ */
 
+interface CreateCommand {
     /**
      * Метод для создания массива команд
      * @return Map<String, Command>

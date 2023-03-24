@@ -3,10 +3,10 @@ package WorkModuls
 import Collections.Collection
 import StudyGroupInformation.StudyGroup
 
+/**
+ * Интерфейс создания коллекции
+ */
 interface CreateCollection {
-    /**
-     * Интерфейс создания коллекции
-     */
 
     /**
      * Меетод создания коллекции

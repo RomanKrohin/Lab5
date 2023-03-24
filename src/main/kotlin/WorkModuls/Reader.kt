@@ -4,10 +4,19 @@ import Collections.Collection
 import Commands.WorkWithHistory
 import StudyGroupInformation.StudyGroup
 
+/**
+ * Класс для чтения, выборки и вывода результатов команд
+ */
 class Reader : WorkWithAsker, WorkWithPrinter, WorkWithTokenizator, WorkWithChooseCommand, WorkWithHistory {
 
     private val history = listOf<String>().toMutableList()
     private val pathsForExecuteScripts = listOf<String>().toMutableList()
+
+    /**
+     * Класс для чтения, выборки и вывода результатов команд
+     * @param collection
+     * @param path
+     */
     fun reader(collection: Collection<String, StudyGroup>, path: String) {
         val asker = createAsker()
         val tokens = createTokenizator()

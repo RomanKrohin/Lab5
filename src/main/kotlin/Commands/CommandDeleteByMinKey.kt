@@ -55,7 +55,7 @@ class CommandDeleteByMinKey(workCollection: Collection<String, StudyGroup>) : Co
     }
 
     override fun createAnswer(): Answer {
-        return Answer(nameError = "Delete my n=minimum key")
+        return Answer(nameError = "Delete by minimum key")
     }
 
     override fun createReversedAnswer(): Answer {
